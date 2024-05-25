@@ -18,7 +18,7 @@ run the program and it will do the rest for you.
 
 ## Releases
 
-You can find the latest releases [here](https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/releases/download/v0.1/WuWa_FPS_Unlocker_v0.1.exe)
+You can find the latest releases [here](https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/releases).
 
 ## Installation
 
@@ -29,6 +29,9 @@ You can find the latest releases [here](https://github.com/WakuWakuPadoru/WuWa_S
 ![Screenshot 1](https://i.imgur.com/1VomUv7.png)
 ![Screenshot 2](https://i.imgur.com/mEzvNxk.png)
 ![Screenshot 3](https://i.imgur.com/MCpOfnJ.png)
+
+## Mac OS Support?
+Mac OS Support is planned for the future whenever the game releases on it but is subject to change.
 
 ## Technology
 
