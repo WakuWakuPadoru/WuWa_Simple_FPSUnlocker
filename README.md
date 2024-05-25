@@ -20,7 +20,7 @@ If you find this useful, do considering giving this project a star and sharing i
 - No additional installations or dependencies required (apart from Wuthering Waves). Just download and run the program!
 - Light-weight and simple. No modifications to the game files, just the settings file.
 
-## Releases
+## Releases / Downloads
 
 You can find the latest releases [here](https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/releases).
 
