@@ -28,7 +28,7 @@ You can find the latest releases [here](https://github.com/WakuWakuPadoru/WuWa_S
 
 - Download the latest release.
 - Extract **all of the contents** of the downloaded ZIP file.
-- run "main.exe" or "main" from the extracted folder.
+- Run "main.exe" or "main" from the extracted folder.
 - Run the downloaded file :)
 - Win your 50s/50s!
 
