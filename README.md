@@ -26,10 +26,13 @@ You can find the latest releases [here](https://github.com/WakuWakuPadoru/WuWa_S
 
 ## Installation
 
-- Download the latest release and run it. It's as simple as that!
+- Download the latest release.
+- Extract **all of the contents** of the downloaded ZIP file.
+- run "main.exe" or "main" from the extracted folder.
 - Run the downloaded file :)
 - Win your 50s/50s!
 
+![Screenshot 0](https://i.imgur.com/tkU1FDY.png)
 ![Screenshot 1](https://i.imgur.com/1VomUv7.png)
 ![Screenshot 2](https://i.imgur.com/mEzvNxk.png)
 ![Screenshot 3](https://i.imgur.com/MCpOfnJ.png)
