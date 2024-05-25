@@ -78,7 +78,7 @@ def fps_value(directory):
             json_value["KeyCustomFrameRate"] = fps
             cursor.execute("UPDATE LocalStorage SET Value = ? WHERE Key = 'GameQualitySetting'",
                            (json.dumps(json_value),))
-            messagebox.OK = messagebox.showinfo("Success", "FPS Value changed successfully!")
+            messagebox.OK = messagebox.showinfo("Success", "FPS Value changed successfully! You can now close this program and enjoy the game!")
             db.commit()
     except TypeError as e:
         if str(e) == "'NoneType' object is not subscriptable":
