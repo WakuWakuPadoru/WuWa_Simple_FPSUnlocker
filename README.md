@@ -6,7 +6,7 @@ This is a simple FPS Unlocker that can be used to push Wuthering Waves's max FPS
 This Unlocker is designed to be simple to use without much frills. Automated checks and scripts mean that you can just
 run the program, and it will do the rest for you.
 
-If you find this useful, do considering giving this project a star and sharing it with your friends!
+If you find this useful, do consider giving this project a star and sharing it with your friends!
 
 **Wuthering Waves is a game developed by Kuro Games, and this project is not affiliated with them in any way. All rights belong to their respective copyright holders and owners.**
 
