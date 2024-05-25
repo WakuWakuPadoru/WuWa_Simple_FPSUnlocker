@@ -4,10 +4,11 @@ import os
 import sqlite3
 import sys
 import webbrowser
-import psutil
 from pathlib import Path
 from tkinter import messagebox, Label, Button, Tk, CENTER, simpledialog
 from tkinter.filedialog import askopenfilename
+
+import psutil
 
 
 def resource_path(relative_path):
@@ -34,7 +35,6 @@ def choose_directory():
                                     title="Select where \"Wuthering Waves.exe\" is located.",
                                     filetypes=[("exe files", "Wuthering Waves.exe")])
         if directory is not None and directory != "":
-            print(directory)
             path_dir_exe = Path(directory).parent.joinpath("Wuthering Waves.exe")
             path_dir_ext = Path(directory).parent.joinpath("Client", "Saved", "LocalStorage")
             if path_dir_ext.is_dir() and path_dir_exe.is_file():
