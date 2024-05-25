@@ -1,11 +1,22 @@
+import glob
+import json
 import os
+import sqlite3
+import sys
+import webbrowser
+import psutil
+from pathlib import Path
 from tkinter import messagebox, Label, Button, Tk, CENTER, simpledialog
 from tkinter.filedialog import askopenfilename
-from pathlib import Path
-import sqlite3
-import json
-import psutil
-import glob
+
+
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 
 def check_process_ok():
@@ -22,7 +33,8 @@ def choose_directory():
         directory = askopenfilename(initialdir="C:/Wuthering Waves/Wuthering Waves Game/",
                                     title="Select where \"Wuthering Waves.exe\" is located.",
                                     filetypes=[("exe files", "Wuthering Waves.exe")])
-        if directory is not None:
+        if directory is not None and directory != "":
+            print(directory)
             path_dir_exe = Path(directory).parent.joinpath("Wuthering Waves.exe")
             path_dir_ext = Path(directory).parent.joinpath("Client", "Saved", "LocalStorage")
             if path_dir_ext.is_dir() and path_dir_exe.is_file():
@@ -77,15 +89,17 @@ def fps_value(directory):
         else:
             messagebox.showerror("Error",
                                  f"An error occurred. Please raise an issue or contact me on the GitHub Page with the following message: \n\n{e}")
+            webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
     except Exception as e:
         messagebox.showerror("Error",
                              f"An error occurred. Please raise an issue or contact me on the GitHub Page with the following message: \n\n{e}")
+        webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
 
 
 root_window = Tk()
 root_window.title("Wuthering Waves FPS Unlocker")
 root_window.geometry("500x400")
-root_window.iconbitmap(default="icon.ico")
+root_window.iconbitmap(default=resource_path("./icon.ico"))
 label = Label(root_window, text="Welcome to the Wuthering Waves FPS Unlocker!"
                                 "\n\n To get started, please click the \"Browse\" button below to locate the \"Wuthering Waves.exe\" file.\nMake sure that the game isn't running!"
                                 "\n\n1) You may need to run this program again when you change graphical settings or when there's a new patch.\n2) This doesn't change the game files in any way, only your saved \"settings\".",
