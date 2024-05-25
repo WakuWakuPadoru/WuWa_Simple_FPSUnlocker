@@ -18,7 +18,7 @@ run the program and it will do the rest for you.
 
 ## Releases
 
-You can find the latest releases [here]
+You can find the latest releases [here](https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/releases/download/v0.1/WuWa_FPS_Unlocker_v0.1.exe)
 
 ## Installation
 
