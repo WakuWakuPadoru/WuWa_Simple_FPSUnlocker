@@ -51,4 +51,5 @@ possible. Compiled to EXE using PyInstaller.
 Even though it's meant to be a simple Unlocker, I ended up implementing multiple checks and fail-safes that probably
 wasn't needed. (sweats)
 
-
+## Repository Links
+[WuWa_Simple_FPSUnlocker](https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/)
