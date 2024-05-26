@@ -53,3 +53,5 @@ wasn't needed. (sweats)
 
 ## Repository Links
 [WuWa_Simple_FPSUnlocker](https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/)
+
+![Waku](https://i.imgur.com/xkQ9ko5.gif)
