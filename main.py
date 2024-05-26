@@ -5,10 +5,30 @@ import sqlite3
 import sys
 import webbrowser
 from pathlib import Path
+import psutil
 from tkinter import messagebox, Label, Button, Tk, CENTER, simpledialog
 from tkinter.filedialog import askopenfilename
+import requests
 
-import psutil
+version = 0.5
+
+
+def check_version():
+    try:
+        get_version = \
+            float(
+                requests.get(
+                    "https://api.github.com/repos/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/releases/latest").json()[
+                    "tag_name"][1:])
+        if get_version > version:
+            ask_update_dialog = messagebox.askyesno("Update Available",
+                                                    f"An update is available!\nWould you like to view the latest release?\n\nCurrent Version: {version}\nLatest Version: {get_version}")
+            if ask_update_dialog is True:
+                webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/releases/latest")
+            else:
+                return
+    except Exception as e:
+        return
 
 
 def resource_path(relative_path):
@@ -99,10 +119,13 @@ def fps_value(directory):
 
 
 root_window = Tk()
-root_window.title("Wuthering Waves FPS Unlocker")
+root_window.title(f"Wuthering Waves FPS Unlocker v{version}")
 root_window.geometry("500x400")
 root_window.iconbitmap(default=resource_path("./icon.ico"))
-label = Label(root_window, text="Welcome to the Wuthering Waves FPS Unlocker!"
+root_window.withdraw()
+check_version()
+root_window.deiconify()
+label = Label(root_window, text=f"Welcome to the Wuthering Waves FPS Unlocker v{version}!"
                                 "\n\n To get started, please click the \"Browse\" button below to locate the \"Wuthering Waves.exe\" file.\nMake sure that the game isn't running!"
                                 "\n\n1) You may need to run this program again when you change graphical settings or when there's a new patch.\n2) This doesn't change the game files in any way, only your saved \"settings\".",
               font=("Bahnschrift", 14), wraplength=450, justify=CENTER)
