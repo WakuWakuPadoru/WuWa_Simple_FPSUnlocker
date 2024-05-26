@@ -10,7 +10,7 @@ from tkinter import messagebox, Label, Button, Tk, CENTER, simpledialog
 from tkinter.filedialog import askopenfilename
 import requests
 
-version = 0.5
+version = 0.51
 
 
 def check_version():
@@ -89,7 +89,7 @@ def choose_directory():
 def fps_value(directory):
     try:
         fps = simpledialog.askinteger(title="", prompt="Choose your desired FPS Value:\t\t\t", initialvalue=90,
-                                      minvalue=60, maxvalue=240)
+                                      minvalue=60, maxvalue=120)
         if fps is not None:
             db = sqlite3.connect(
                 Path(directory).joinpath("LocalStorage.db"))
@@ -105,9 +105,7 @@ def fps_value(directory):
     except TypeError as e:
         if str(e) == "'NoneType' object is not subscriptable":
             messagebox.showerror("Error",
-                                 "Your LocalStorage file is corrupted. Please delete it and run the game at least once to regenerate a new LocalStorage file and try again!"
-                                 "The folder will be opened for you after you click OK.")
-            os.startfile(directory)
+                                 "Your LocalStorage file is incomplete. Please run the game at least once and try again!")
         else:
             messagebox.showerror("Error",
                                  f"An error occurred. Please raise an issue or contact me on the GitHub Page with the following message: \n\n{e}")
