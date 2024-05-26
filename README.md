@@ -1,3 +1,5 @@
+<head><meta name="google-site-verification" content="LvvaLosxrv4rxloLuXMlWk1QBV3se0OeqGkXj4BNi8w" /></head>
+
 # Wuthering Waves (WuWa) Simple FPS Unlocker
 
 ## Introduction
@@ -51,4 +53,4 @@ possible. Compiled to EXE using PyInstaller.
 Even though it's meant to be a simple Unlocker, I ended up implementing multiple checks and fail-safes that probably
 wasn't needed. (sweats)
 
-<meta name="google-site-verification" content="LvvaLosxrv4rxloLuXMlWk1QBV3se0OeqGkXj4BNi8w" />
+
