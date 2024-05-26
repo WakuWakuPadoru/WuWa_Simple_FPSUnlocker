@@ -4,17 +4,22 @@
 
 This is a simple FPS Unlocker that can be used to push Wuthering Waves's max FPS cap beyond the default 60 FPS.
 This Unlocker is designed to be simple to use without much frills. Automated checks and scripts mean that you can just
-run the program, and it will do the rest for you.
+run the program, and it will do the rest for you. It comes in a Windows exe executable format, so you just need to
+download,
+extract, and run! Mac OS support is planned for the future when the games comes out on Mac, but that is subject to
+change.
 
 If you find this useful, do consider giving this project a star and share it with your friends!
 
-**Wuthering Waves is a game developed by Kuro Games, and this project is not affiliated with them in any way. All rights belong to their respective copyright holders and owners.**
+**Wuthering Waves is a game developed by Kuro Games, and this project is not affiliated with them in any way. All rights
+belong to their respective copyright holders and owners.**
 
 ## Features
 
 - Simple to use with clear instructions at every step of the way!
 - Multiple checks and verifications to make this as bug-free and smooth as possible.
-- Simple to use UI, no need for command prompts or CLI. Just run the program and navigate the UI with buttons and mouse
+- Simple to use UI, no need for command prompts or CLI. Just run the program / exe and navigate the UI with buttons and
+  mouse
   clicks!
 - Input your own desired FPS cap. [60 - 240 FPS]
 - No additional installations or dependencies required (apart from Wuthering Waves). Just download and run the program!
@@ -36,9 +41,6 @@ You can find the latest releases [here](https://github.com/WakuWakuPadoru/WuWa_S
 ![Screenshot 1](https://i.imgur.com/1VomUv7.png)
 ![Screenshot 2](https://i.imgur.com/mEzvNxk.png)
 ![Screenshot 3](https://i.imgur.com/MCpOfnJ.png)
-
-## Mac OS Support?
-Mac OS Support is planned for the future whenever the game releases on it but is subject to change.
 
 ## Technology
 
