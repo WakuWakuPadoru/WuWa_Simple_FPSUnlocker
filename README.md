@@ -28,7 +28,7 @@ belong to their respective copyright holders and owners.**
 
 ## Releases / Downloads
 
-You can find the latest releases [here](https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/releases).
+You can find the latest release [here](https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/releases/latest).
 
 ## Installation
 
