@@ -54,13 +54,14 @@ def choose_directory():
                     return
                 elif len(matching_files) == 0:
                     messagebox.showerror("Error",
-                                         "LocalStorage file not found. Please run the game at least once to regenerate a new LocalStorage file and try again!")
+                                         "LocalStorage file not found. Please run the game at least once and try again!")
 
                 else:
                     messagebox.showinfo("Success", "File selected successfully!")
                     fps_value(path_dir_ext)
             else:
-                messagebox.showerror("Error", "File not found. Please try again.")
+                messagebox.showerror("Error",
+                                     "LocalStorage file not found. Please run the game at least once and try again!")
         else:
             return
 
@@ -78,7 +79,8 @@ def fps_value(directory):
             json_value["KeyCustomFrameRate"] = fps
             cursor.execute("UPDATE LocalStorage SET Value = ? WHERE Key = 'GameQualitySetting'",
                            (json.dumps(json_value),))
-            messagebox.OK = messagebox.showinfo("Success", "FPS Value changed successfully! You can now close this program and enjoy the game!")
+            messagebox.OK = messagebox.showinfo("Success",
+                                                "FPS Value changed successfully! You can now close this program and enjoy the game!")
             db.commit()
     except TypeError as e:
         if str(e) == "'NoneType' object is not subscriptable":
