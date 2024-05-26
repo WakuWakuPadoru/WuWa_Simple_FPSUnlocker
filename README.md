@@ -1,8 +1,3 @@
-
-<meta name="google-site-verification" content="Ib3Q004t90jgY-dFWhLhsfShnlFRFH3VIQRyOAA7qfQ" />
-
-
-
 # Wuthering Waves (WuWa) Simple FPS Unlocker
 
 ## Introduction
