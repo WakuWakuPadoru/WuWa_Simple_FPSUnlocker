@@ -1,3 +1,8 @@
+
+<meta name="google-site-verification" content="Ib3Q004t90jgY-dFWhLhsfShnlFRFH3VIQRyOAA7qfQ" />
+
+
+
 # Wuthering Waves (WuWa) Simple FPS Unlocker
 
 ## Introduction
@@ -50,5 +55,3 @@ unlock the FPS cap using SQLite. It does not interfere with the game files and u
 possible. Compiled to EXE using PyInstaller.
 Even though it's meant to be a simple Unlocker, I ended up implementing multiple checks and fail-safes that probably
 wasn't needed. (sweats)
-
-<meta name="google-site-verification" content="Ib3Q004t90jgY-dFWhLhsfShnlFRFH3VIQRyOAA7qfQ" />
