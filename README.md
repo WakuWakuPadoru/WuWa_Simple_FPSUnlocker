@@ -22,7 +22,7 @@ belong to their respective copyright holders and owners.**
 - Simple to use UI, no need for command prompts or CLI. Just run the program / exe and navigate the UI with buttons and
   mouse
   clicks!
-- Input your own desired FPS cap. [60 - 120 FPS]
+- Input your own desired FPS cap. [25 - 120 FPS]
 - Enable True Full Screen Mode / Exclusive Full Screen for slightly better performance.
 - Set your desired Full Screen Resolution.
 - Program will notify you whenever there are updates available!

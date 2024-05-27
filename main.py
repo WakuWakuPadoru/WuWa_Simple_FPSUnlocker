@@ -14,7 +14,7 @@ import requests
 
 config = configparser.ConfigParser()
 
-version = 0.61
+version = 0.62
 
 
 def check_version():
