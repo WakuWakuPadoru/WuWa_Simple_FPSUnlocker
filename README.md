@@ -2,9 +2,9 @@
 
 ## Introduction
 
-This is a simple FPS Unlocker that can be used to push Wuthering Waves's max FPS cap beyond the default 60 FPS.
-it also allows you to enable True Full Screen Mode and set your desired Full Screen Resolution, which is not available in the game's settings.
-This Unlocker is designed to be simple to use without much frills. Automated checks and scripts mean that you can just
+This is a simple FPS Unlocker that can be used to **push Wuthering Waves's max FPS cap beyond the default 60 FPS**.
+it also allows you to **enable True Full Screen Mode** and **set your desired Full Screen Resolution**, which is not available in the game's settings.
+This Unlocker is designed to be **simple to use** without much frills. Automated checks and scripts mean that you can just
 run the program, and it will do the rest for you. It comes in a Windows exe executable format, so you just need to
 download,
 extract, and run! Mac OS support is planned for the future when the game comes out on Mac, but that is subject to
