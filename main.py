@@ -52,10 +52,8 @@ def check_process_ok():
         return True
 
 
-def fullscreen(directory, db_directory):
+def fullscreen(db_directory, path_dir_fs_cfg):
     try:
-        path_dir_fs_cfg = Path(directory).parent.joinpath("Client", "Saved", "Config", "WindowsNoEditor",
-                                                          "GameUserSettings.ini")
         config.read(path_dir_fs_cfg)
         fs = config.get("/Script/Engine.GameUserSettings", "FullscreenMode")
         last_fs = config.get("/Script/Engine.GameUserSettings", "LastConfirmedFullscreenMode")
@@ -148,6 +146,8 @@ def choose_directory():
         if directory is not None and directory != "":
             path_dir_exe = Path(directory).parent.joinpath("Wuthering Waves.exe")
             path_dir_ext = Path(directory).parent.joinpath("Client", "Saved", "LocalStorage")
+            path_dir_fs_cfg = Path(directory).parent.joinpath("Client", "Saved", "Config", "WindowsNoEditor",
+                                                              "GameUserSettings.ini")
             if path_dir_ext.is_dir() and path_dir_exe.is_file():
                 matching_files = sorted(glob.glob(str(path_dir_ext) + "/LocalStorage*.db"))
                 matching_files_oos = "\n".join(matching_files)
@@ -169,8 +169,8 @@ def choose_directory():
 
                 else:
                     messagebox.showinfo("Success", "File selected successfully!")
-                    fullscreen(directory, path_dir_ext)
-                    fps_value(path_dir_ext)
+                    fullscreen(path_dir_ext, path_dir_fs_cfg)
+                    fps_value(path_dir_ext, path_dir_fs_cfg)
             else:
                 messagebox.showerror("Error",
                                      "LocalStorage file not found. Please run the game at least once and try again!")
@@ -178,7 +178,7 @@ def choose_directory():
             return
 
 
-def fps_value(db_directory):
+def fps_value(db_directory, path_dir_fs_cfg):
     try:
         fps = simpledialog.askinteger(title="", prompt="Choose your desired FPS Value:\t\t\t", initialvalue=90,
                                       minvalue=60, maxvalue=120)
@@ -194,6 +194,9 @@ def fps_value(db_directory):
             messagebox.OK = messagebox.showinfo("Success",
                                                 "FPS Value changed successfully! You can now close this program and enjoy the game!")
             db.commit()
+            config.set("/Script/Engine.GameUserSettings", "frameratelimit", str(fps))
+            with open(path_dir_fs_cfg, "w") as configfile:
+                config.write(configfile)
     except TypeError as e:
         if str(e) == "'NoneType' object is not subscriptable":
             messagebox.showerror("Error",
