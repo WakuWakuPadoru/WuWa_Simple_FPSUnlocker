@@ -182,7 +182,7 @@ def choose_directory():
 def fps_value(db_directory, path_dir_fs_cfg):
     try:
         fps = simpledialog.askinteger(title="", prompt="Choose your desired FPS Value:\t\t\t", initialvalue=90,
-                                      minvalue=60, maxvalue=120)
+                                      minvalue=25, maxvalue=120)
         if fps is not None:
             db = sqlite3.connect(
                 Path(db_directory).joinpath("LocalStorage.db"))
