@@ -3,6 +3,7 @@
 ## Introduction
 
 This is a simple FPS Unlocker that can be used to push Wuthering Waves's max FPS cap beyond the default 60 FPS.
+it also allows you to enable True Full Screen Mode and set your desired Full Screen Resolution, which is not available in the game's settings.
 This Unlocker is designed to be simple to use without much frills. Automated checks and scripts mean that you can just
 run the program, and it will do the rest for you. It comes in a Windows exe executable format, so you just need to
 download,
@@ -22,6 +23,8 @@ belong to their respective copyright holders and owners.**
   mouse
   clicks!
 - Input your own desired FPS cap. [60 - 120 FPS]
+- Enable True Full Screen Mode for slightly better performance.
+- Set your desired Full Screen Resolution.
 - Program will notify you whenever there are updates available!
 - No additional installations or dependencies required (apart from Wuthering Waves). Just download and run the program!
 - Light-weight and simple. No modifications to the game files, just the settings file.
@@ -39,9 +42,14 @@ You can find the latest release [here](https://github.com/WakuWakuPadoru/WuWa_Si
 - Win your 50s/50s!
 
 ![Screenshot 0](https://i.imgur.com/tkU1FDY.png)
-![Screenshot 1](https://i.imgur.com/1VomUv7.png)
-![Screenshot 2](https://i.imgur.com/mEzvNxk.png)
-![Screenshot 3](https://i.imgur.com/MCpOfnJ.png)
+![Screenshot 1](https://i.imgur.com/khhMH0V.png)
+![Screenshot 2](https://i.imgur.com/BbbcFCm.png)
+![Screenshot 3](https://i.imgur.com/SC56o6W.png)
+![Screenshot 4](https://i.imgur.com/tEOjNK2.png)
+![Screenshot 5](https://i.imgur.com/zJtpWeG.png)
+![Screenshot 6](https://i.imgur.com/NoedbV5.png)
+![Screenshot 7](https://i.imgur.com/p3OrHFq.png)
+
 
 ## Technology
 
