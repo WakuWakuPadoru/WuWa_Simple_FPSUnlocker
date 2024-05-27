@@ -13,7 +13,7 @@ import configparser
 
 config = configparser.ConfigParser()
 
-version = 0.6
+version = 0.61
 
 
 def check_version():
