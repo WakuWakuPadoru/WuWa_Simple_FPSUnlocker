@@ -1,3 +1,4 @@
+import configparser
 import glob
 import json
 import os
@@ -5,11 +6,11 @@ import sqlite3
 import sys
 import webbrowser
 from pathlib import Path
-import psutil
-from tkinter import messagebox, Label, Button, Tk, CENTER, simpledialog, Checkbutton, BooleanVar
+from tkinter import messagebox, Label, Button, Tk, CENTER, simpledialog
 from tkinter.filedialog import askopenfilename
+
+import psutil
 import requests
-import configparser
 
 config = configparser.ConfigParser()
 
