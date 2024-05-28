@@ -1,5 +1,4 @@
 from tkinter import Label, Button, Tk, CENTER
-import sys
 
 from checks.update import *
 from checks.permissions import *
