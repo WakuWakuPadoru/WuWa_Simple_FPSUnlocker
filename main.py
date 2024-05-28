@@ -15,7 +15,7 @@ import requests
 
 config = configparser.ConfigParser()
 
-version = 0.63
+version = 0.64
 
 
 def check_version():
@@ -69,7 +69,7 @@ def fullscreen(db_directory, path_dir_fs_cfg):
         current_x = config.get("/Script/Engine.GameUserSettings", "resolutionsizex")
         current_y = config.get("/Script/Engine.GameUserSettings", "resolutionsizey")
         fullscreen_mode_decision = messagebox.askyesno("True Fullscreen Mode",
-                                                       "Would you like to enable True Fullscreen Mode? (Optional). Click on \"Yes\" to enable or \"No\" to disable.\n\nIf you enable this, you can also set your own desired Fullscreen Resolution."
+                                                       "Would you like to enable True Fullscreen Mode? (Optional). Click on \"Yes\" to enable or \"No\" to disable.\n\nTrue Fullscreen Mode can lead to significantly better performance, increased smoothness, reduced stuttering, and reduced hitching.\n\nIf you enable this, you can also set your own desired Fullscreen Resolution."
                                                        f"\n\nCurrent Status: {fs_status}\nCurrent Resolution: {current_x}x{current_y}")
         if fullscreen_mode_decision is True:
             resolution = simpledialog.askstring(title="Resolution",
@@ -234,7 +234,7 @@ if not admin_check():
         # ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None,
         #                                     1)  # IDE
         ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv[1:]),
-                                                               None, 1)  # EXE
+                                            None, 1)  # EXE
         sys.exit()
     else:
         pass
@@ -243,7 +243,7 @@ root_window.deiconify()
 label = Label(root_window, text=f"Welcome to Wuthering Waves FPS Unlocker v{version}!"
                                 "\n\n To get started...\nStep 1) Run the game at least once before using this tool. This generates the needed configuration files.\nStep 2) Click on \"Browse\" to locate the \"Wuthering Waves.exe\" file. It should be located in a folder called \"Wuthering Waves Game\" in your game installation folder.\nStep 3) You will be asked if you would like to enable/disable \"True Fullscreen Mode\". This is optional.\nStep 4) If you enable \"True Fullscreen Mode\", you can also set your own desired Fullscreen Resolution.\n\nMake sure that the game isn't running!"
                                 "\n\n1) You may need to run this program again when you change graphical settings or when there's a new patch.\n2) This doesn't change the game files in any way, only your saved \"settings\"."
-                                "\n3) \"True Fullscreen Mode\" might marginally improve performance over the default Fullscreen Setting. This allows Windows to better manage the game's resources.\n",
+                                "\n3) \"True Fullscreen Mode\" might significantly improve performance over the default Fullscreen Setting. This allows Windows to better manage the game's resources and can lead to increased smoothness, less stuttering, and less hitching.\n",
               font=("Bahnschrift", 14), wraplength=590, justify=CENTER)
 label.pack()
 button = Button(root_window, text="Browse", command=choose_directory, font=("Bahnschrift", 14))
