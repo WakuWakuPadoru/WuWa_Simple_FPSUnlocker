@@ -1,4 +1,5 @@
 import configparser
+import ctypes
 import glob
 import json
 import os
@@ -14,7 +15,7 @@ import requests
 
 config = configparser.ConfigParser()
 
-version = 0.62
+version = 0.63
 
 
 def check_version():
@@ -104,6 +105,7 @@ def fullscreen(db_directory, path_dir_fs_cfg):
                 cursor.execute("UPDATE LocalStorage SET Value = ? WHERE Key = 'GameQualitySetting'",
                                (json.dumps(json_value),))
                 db.commit()
+                db.close()
                 config.set("/Script/Engine.GameUserSettings", "lastuserconfirmedresolutionsizex", str(x))
                 config.set("/Script/Engine.GameUserSettings", "lastuserconfirmedresolutionsizey", str(y))
                 config.set("/Script/Engine.GameUserSettings", "resolutionsizex", str(x))
@@ -195,6 +197,7 @@ def fps_value(db_directory, path_dir_fs_cfg):
             messagebox.OK = messagebox.showinfo("Success",
                                                 "FPS Value changed successfully! You can now close this program and enjoy the game!")
             db.commit()
+            db.close()
             config.set("/Script/Engine.GameUserSettings", "frameratelimit", str(fps))
             with open(path_dir_fs_cfg, "w") as configfile:
                 config.write(configfile)
@@ -212,11 +215,29 @@ def fps_value(db_directory, path_dir_fs_cfg):
         webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
 
 
+def admin_check():
+    try:
+        return ctypes.windll.shell32.IsUserAnAdmin()
+    except:
+        return False
+
+
 root_window = Tk()
 root_window.title(f"Wuthering Waves FPS Unlocker v{version}")
 root_window.geometry("600x600")
 root_window.iconbitmap(default=resource_path("./icon.ico"))
 root_window.withdraw()
+if not admin_check():
+    ask_admin = messagebox.askyesno("Admin Rights",
+                                    "This program might require Admin Rights to function properly depending on where the game is installed (E.g. Program Files). \n\nWould you like to restart the program with Admin Rights?\n\nIn most cases, this is not required.")
+    if ask_admin is True:
+        # ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None,
+        #                                     1)  # IDE
+        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv[1:]),
+                                                               None, 1)  # EXE
+        sys.exit()
+    else:
+        pass
 check_version()
 root_window.deiconify()
 label = Label(root_window, text=f"Welcome to Wuthering Waves FPS Unlocker v{version}!"
