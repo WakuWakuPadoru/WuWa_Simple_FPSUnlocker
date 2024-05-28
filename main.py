@@ -224,7 +224,7 @@ def admin_check():
 
 root_window = Tk()
 root_window.title(f"Wuthering Waves FPS Unlocker v{version}")
-root_window.geometry("600x600")
+root_window.geometry("700x650")
 root_window.iconbitmap(default=resource_path("./icon.ico"))
 root_window.withdraw()
 if not admin_check():
@@ -241,7 +241,7 @@ if not admin_check():
 check_version()
 root_window.deiconify()
 label = Label(root_window, text=f"Welcome to Wuthering Waves FPS Unlocker v{version}!"
-                                "\n\n To get started...\nStep 1) Run the game at least once before using this tool. This generates the needed configuration files.\nStep 2) Click on \"Browse\" to locate the \"Wuthering Waves.exe\" file.\nStep 3) You will be asked if you would like to enable/disable \"True Fullscreen Mode\". This is optional.\nStep 4) If you enable \"True Fullscreen Mode\", you can also set your own desired Fullscreen Resolution.\n\nMake sure that the game isn't running!"
+                                "\n\n To get started...\nStep 1) Run the game at least once before using this tool. This generates the needed configuration files.\nStep 2) Click on \"Browse\" to locate the \"Wuthering Waves.exe\" file. It should be located in a folder called \"Wuthering Waves Game\" in your game installation folder.\nStep 3) You will be asked if you would like to enable/disable \"True Fullscreen Mode\". This is optional.\nStep 4) If you enable \"True Fullscreen Mode\", you can also set your own desired Fullscreen Resolution.\n\nMake sure that the game isn't running!"
                                 "\n\n1) You may need to run this program again when you change graphical settings or when there's a new patch.\n2) This doesn't change the game files in any way, only your saved \"settings\"."
                                 "\n3) \"True Fullscreen Mode\" might marginally improve performance over the default Fullscreen Setting. This allows Windows to better manage the game's resources.\n",
               font=("Bahnschrift", 14), wraplength=590, justify=CENTER)
