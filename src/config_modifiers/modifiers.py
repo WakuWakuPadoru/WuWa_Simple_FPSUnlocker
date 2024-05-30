@@ -65,96 +65,111 @@ def choose_directory() -> None:
 def manage_fullscreen(db_directory, path_dir_fs_cfg) -> None:
     try:
         config.read(path_dir_fs_cfg)
+
         fs = config.get("/Script/Engine.GameUserSettings", "FullscreenMode")
         last_fs = config.get("/Script/Engine.GameUserSettings", "LastConfirmedFullscreenMode")
         pref_fs = config.get("/Script/Engine.GameUserSettings", "PreferredFullscreenMode")
         fsm_list = [fs, last_fs, pref_fs]
-        fs_status = None
-
-        if min(fsm_list) == "0":
-            fs_status = "Enabled"
-        else:
-            fs_status = "Disabled"
-
+        fs_status = "Enabled" if min(fsm_list) == "0" else "Disabled"
         current_x = config.get("/Script/Engine.GameUserSettings", "resolutionsizex")
         current_y = config.get("/Script/Engine.GameUserSettings", "resolutionsizey")
+
         fullscreen_mode_decision = messagebox.askyesno("True Fullscreen Mode",
                                                        "Would you like to enable True Fullscreen Mode? (Optional)."
                                                        "Click on \"Yes\" to enable or \"No\" to disable."
                                                        "\n\nTrue Fullscreen Mode can lead to significantly better performance, increased smoothness, reduced stuttering, and reduced hitching"
                                                        f"\n\nCurrent Status: {fs_status}\nCurrent Resolution: {current_x}x, {current_y}y")
 
-        if fullscreen_mode_decision is True:
-            resolution = simpledialog.askstring(title="Resolution",
-                                                prompt="Choose your desired Resolution "
-                                                       "(E.g. 1280x720, 1920x1080, 2560x1440, and etc)\t\t\t",
-                                                initialvalue=f"{current_x}x{current_y}")
-            if resolution is not None and resolution != "":
-                x = resolution.split("x")[0]
-                y = resolution.split("x")[1]
-                while True:
-                    try:
-                        x = int(x)
-                        y = int(y)
-                        break
-                    except Exception as e:
-                        messagebox.showerror("Error",
-                                             "Please enter a valid Resolution (E.g. 1280x720, 1920x1080, 2560x1440, and etc)")
-
-                        resolution = simpledialog.askstring(title="Resolution",
-                                                            prompt="Please enter a valid Resolution (E.g. 1280x720, 1920x1080, 2560x1440, and etc)\t\t\t",
-                                                            initialvalue=f"{current_x}x{current_y}")
-
-                        if resolution is not None and resolution != "":
-                            x = resolution.split("x")[0]
-                            y = resolution.split("x")[1]
-                        else:
-                            x = x
-                            y = y
-
-                db = sqlite3.connect(
-                    Path(db_directory).joinpath("LocalStorage.db"))
-                cursor = db.cursor()
-                cursor.execute("SELECT * FROM LocalStorage WHERE Key = 'GameQualitySetting'")
-                json_value = json.loads(cursor.fetchone()[1])
-                json_value["KeyPcResolutionWidth"] = x
-                json_value["KeyPcResolutionHeight"] = y
-                cursor.execute("UPDATE LocalStorage SET Value = ? WHERE Key = 'GameQualitySetting'",
-                               (json.dumps(json_value),))
-                db.commit()
-                db.close()
-                config.set("/Script/Engine.GameUserSettings", "lastuserconfirmedresolutionsizex", str(x))
-                config.set("/Script/Engine.GameUserSettings", "lastuserconfirmedresolutionsizey", str(y))
-                config.set("/Script/Engine.GameUserSettings", "resolutionsizex", str(x))
-                config.set("/Script/Engine.GameUserSettings", "resolutionsizey", str(y))
-                messagebox.OK = messagebox.showinfo("Success",
-                                                    "Resolution changed successfully!")
-            else:
-                messagebox.showinfo("Info", "No Resolution selected, using current Resolution settings.")
-            config.set("/Script/Engine.GameUserSettings", "FullscreenMode", "0")
-            config.set("/Script/Engine.GameUserSettings", "LastConfirmedFullscreenMode", "0")
-            config.set("/Script/Engine.GameUserSettings", "PreferredFullscreenMode", "0")
-            with open(path_dir_fs_cfg, "w") as configfile:
-                config.write(configfile)
-            messagebox.showinfo("Success", "True Fullscreen Mode enabled successfully!")
-        elif fullscreen_mode_decision is False:
+        if not fullscreen_mode_decision:
+            #TODO: Check if the values are supposed to be one if we want to disable fullscreen mode?
             config.set("/Script/Engine.GameUserSettings", "FullscreenMode", "1")
             config.set("/Script/Engine.GameUserSettings", "LastConfirmedFullscreenMode", "1")
             config.set("/Script/Engine.GameUserSettings", "PreferredFullscreenMode", "1")
+
             with open(path_dir_fs_cfg, "w") as configfile:
                 config.write(configfile)
+
             messagebox.showinfo("Success", "True Fullscreen Mode disabled successfully!")
+            return
+        
+        resolution = simpledialog.askstring(title="Resolution",
+                                            prompt="Choose your desired Resolution "
+                                                    "(E.g. 1280x720, 1920x1080, 2560x1440, and etc)\t\t\t",
+                                            initialvalue=f"{current_x}x{current_y}")
+        
+        if not (resolution is not None and resolution != ""):
+            messagebox.showinfo("Info", "No Resolution selected, using current Resolution settings.")
+
+        x = resolution.split("x")[0]
+        y = resolution.split("x")[1]
+
+        while True:
+            try:
+                x = int(x)
+                y = int(y)
+                break
+            except Exception as e:
+                messagebox.showerror("Error",
+                                        "Please enter a valid Resolution (E.g. 1280x720, 1920x1080, 2560x1440, and etc)")
+
+                resolution = simpledialog.askstring(title="Resolution",
+                                                    prompt="Please enter a valid Resolution (E.g. 1280x720, 1920x1080, 2560x1440, and etc)\t\t\t",
+                                                    initialvalue=f"{current_x}x{current_y}")
+
+                if resolution is not None and resolution != "":
+                    x = resolution.split("x")[0]
+                    y = resolution.split("x")[1]
+                else:
+                    x = x
+                    y = y
+
+        db = sqlite3.connect(
+            Path(db_directory).joinpath("LocalStorage.db"))
+        
+        cursor = db.cursor()
+        cursor.execute("SELECT * FROM LocalStorage WHERE Key = 'GameQualitySetting'")
+
+        json_value = json.loads(cursor.fetchone()[1])
+        json_value["KeyPcResolutionWidth"] = x
+        json_value["KeyPcResolutionHeight"] = y
+
+        cursor.execute("UPDATE LocalStorage SET Value = ? WHERE Key = 'GameQualitySetting'",
+                        (json.dumps(json_value),))
+        
+        db.commit()
+        db.close()
+
+        config.set("/Script/Engine.GameUserSettings", "lastuserconfirmedresolutionsizex", str(x))
+        config.set("/Script/Engine.GameUserSettings", "lastuserconfirmedresolutionsizey", str(y))
+        config.set("/Script/Engine.GameUserSettings", "resolutionsizex", str(x))
+        config.set("/Script/Engine.GameUserSettings", "resolutionsizey", str(y))
+
+        messagebox.OK = messagebox.showinfo("Success",
+                                            "Resolution changed successfully!")
+
+        #TODO: Check if the values are supposed to be zero if we want to enable fullscreen mode?
+        config.set("/Script/Engine.GameUserSettings", "FullscreenMode", "0")
+        config.set("/Script/Engine.GameUserSettings", "LastConfirmedFullscreenMode", "0")
+        config.set("/Script/Engine.GameUserSettings", "PreferredFullscreenMode", "0")
+
+        with open(path_dir_fs_cfg, "w") as configfile:
+            config.write(configfile)
+
+        messagebox.showinfo("Success", "True Fullscreen Mode enabled successfully!")
+            
 
     except TypeError as e:
         if str(e) == "'NoneType' object is not subscriptable":
             messagebox.showerror("Error",
                                  "Your LocalStorage file has yet to be completed."
                                  "Please run the game at least once and try again!")
-        else:
-            messagebox.showerror("Error",
-                                 f"An error occurred. Please raise an issue or contact me on the GitHub Page with the following message: \n\n{e}")
-            webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
-            # This shouldn't happen as this file should be generated by the game together with the LocalStorage file which was checked earlier.
+            return
+        
+        messagebox.showerror("Error",
+                                f"An error occurred. Please raise an issue or contact me on the GitHub Page with the following message: \n\n{e}")
+        webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
+        # This shouldn't happen as this file should be generated by the game together with the LocalStorage file which was checked earlier.
+        
     except Exception as e:
         messagebox.showerror("Error",
                              f"An error occurred. "
