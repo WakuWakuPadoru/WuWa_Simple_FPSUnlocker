@@ -166,33 +166,47 @@ def fps_value(db_directory, path_dir_fs_cfg) -> None:
     try:
         fps = simpledialog.askinteger(title="", prompt="Choose your desired FPS Value:\t\t\t", initialvalue=90,
                                       minvalue=25, maxvalue=120)
-        if fps is not None:
-            db = sqlite3.connect(
-                Path(db_directory).joinpath("LocalStorage.db"))
-            cursor = db.cursor()
-            cursor.execute("SELECT * FROM LocalStorage WHERE Key = 'GameQualitySetting'")
-            json_value = json.loads(cursor.fetchone()[1])
-            json_value["KeyCustomFrameRate"] = fps
-            cursor.execute("UPDATE LocalStorage SET Value = ? WHERE Key = 'GameQualitySetting'",
-                           (json.dumps(json_value),))
-            messagebox.OK = messagebox.showinfo("Success",
-                                                "FPS Value changed successfully! You can now close this program and enjoy the game!")
-            db.commit()
-            db.close()
-            config.set("/Script/Engine.GameUserSettings", "frameratelimit", str(fps))
-            with open(path_dir_fs_cfg, "w") as configfile:
-                config.write(configfile)
+        if not fps:
+            return
+
+        db = sqlite3.connect(
+            Path(db_directory).joinpath("LocalStorage.db"))
+
+        cursor = db.cursor()
+        cursor.execute(
+            "SELECT * FROM LocalStorage WHERE Key = 'GameQualitySetting'")
+
+        json_value = json.loads(cursor.fetchone()[1])
+        json_value["KeyCustomFrameRate"] = fps
+
+        cursor.execute("UPDATE LocalStorage SET Value = ? WHERE Key = 'GameQualitySetting'",
+                       (json.dumps(json_value),))
+
+        messagebox.OK = messagebox.showinfo("Success",
+                                            "FPS Value changed successfully! You can now close this program and enjoy the game!")
+
+        db.commit()
+        db.close()
+
+        config.set("/Script/Engine.GameUserSettings",
+                   "frameratelimit", str(fps))
+
+        with open(path_dir_fs_cfg, "w") as configfile:
+            config.write(configfile)
 
     except TypeError as e:
         if str(e) == "'NoneType' object is not subscriptable":
             messagebox.showerror("Error",
                                  "Your LocalStorage file is incomplete. Please run the game at least once and try again!")
-        else:
-            messagebox.showerror("Error",
-                                 f"An error occurred. Please raise an issue or contact me on the GitHub Page with the following message: \n\n{e}")
-            webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
+            return
+
+        messagebox.showerror(
+            "Error", f"An error occurred. Please raise an issue or contact me on the GitHub Page with the following message: \n\n{e}")
+        webbrowser.open(
+            "https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
 
     except Exception as e:
         messagebox.showerror("Error",
                              f"An error occurred. Please raise an issue or contact me on the GitHub Page with the following message: \n\n{e}")
-        webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
+        webbrowser.open(
+            "https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
