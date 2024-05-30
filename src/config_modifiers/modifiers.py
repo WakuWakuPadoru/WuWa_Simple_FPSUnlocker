@@ -14,43 +14,52 @@ config = configparser.ConfigParser()
 
 
 def choose_directory() -> None:
-    if check_isvalid_process() is True:
-        directory = askopenfilename(initialdir="C:/Wuthering Waves/Wuthering Waves Game/",
-                                    title="Select where \"Wuthering Waves.exe\" is located.",
-                                    filetypes=[("exe files", "Wuthering Waves.exe")])
-        if directory is not None and directory != "":
-            path_dir_exe = Path(directory).parent.joinpath("Wuthering Waves.exe")
-            path_dir_ext = Path(directory).parent.joinpath("Client", "Saved", "LocalStorage")
-            path_dir_fs_cfg = Path(directory).parent.joinpath("Client", "Saved", "Config", "WindowsNoEditor",
-                                                              "GameUserSettings.ini")
-            if path_dir_ext.is_dir() and path_dir_exe.is_file():
-                matching_files = sorted(glob.glob(str(path_dir_ext) + "/LocalStorage*.db"))
-                matching_files_oos = "\n".join(matching_files)
-                if len(matching_files) > 1:
-                    messagebox.showerror("Error",
-                                         "Multiple LocalStorage files found. This may cause compatibility issues with the FPS Unlocker."
-                                         f"\n\n{matching_files_oos}"
-                                         "\n\nThis is usually caused by game crashes or corruption with the original file. Please do the following before continuing:"
-                                         "\n\n1) Click on OK to open the folder where the LocalStorage files are located. "
-                                         "\n2) Make sure that the game and launcher isn't running and delete all files in the opened folder. (Your settings will be reset)."
-                                         "\n3) Run the game at least once and close it to generate a new LocalStorage file."
-                                         "\n4) Run this program again and it should work as intended.")
+    if not check_isvalid_process():
+        return
 
-                    os.startfile(path_dir_ext)
-                    return
-                elif len(matching_files) == 0:
-                    messagebox.showerror("Error",
-                                         "LocalStorage file not found. Please run the game at least once and try again!")
+    directory = askopenfilename(initialdir="C:/Wuthering Waves/Wuthering Waves Game/",
+                                title="Select where \"Wuthering Waves.exe\" is located.", filetypes=[("exe files", "Wuthering Waves.exe")])
 
-                else:
-                    messagebox.showinfo("Success", "File selected successfully!")
-                    manage_fullscreen(path_dir_ext, path_dir_fs_cfg)
-                    fps_value(path_dir_ext, path_dir_fs_cfg)
-            else:
-                messagebox.showerror("Error",
-                                     "LocalStorage file not found. Please run the game at least once and try again!")
-        else:
-            return
+    if not (directory is not None and directory != ""):
+        messagebox.showerror(
+            "Error", "LocalStorage file not found. Please run the game at least once and try again!")
+        return
+
+    path_dir_exe = Path(directory).parent.joinpath("Wuthering Waves.exe")
+
+    path_dir_ext = Path(directory).parent.joinpath(
+        "Client", "Saved", "LocalStorage")
+
+    path_dir_fs_cfg = Path(directory).parent.joinpath(
+        "Client", "Saved", "Config", "WindowsNoEditor", "GameUserSettings.ini")
+
+    if not (path_dir_ext.is_dir() and path_dir_exe.is_file()):
+        return
+
+    matching_files = sorted(glob.glob(str(path_dir_ext) + "/LocalStorage*.db"))
+    matching_files_oos = "\n".join(matching_files)
+
+    if len(matching_files) > 1:
+        messagebox.showerror("Error",
+                             "Multiple LocalStorage files found. This may cause compatibility issues with the FPS Unlocker."
+                             f"\n\n{matching_files_oos}"
+                             "\n\nThis is usually caused by game crashes or corruption with the original file. Please do the following before continuing:"
+                             "\n\n1) Click on OK to open the folder where the LocalStorage files are located. "
+                             "\n2) Make sure that the game and launcher isn't running and delete all files in the opened folder. (Your settings will be reset)."
+                             "\n3) Run the game at least once and close it to generate a new LocalStorage file."
+                             "\n4) Run this program again and it should work as intended.")
+
+        os.startfile(path_dir_ext)
+        return
+
+    if len(matching_files) == 0:
+        messagebox.showerror(
+            "Error", "LocalStorage file not found. Please run the game at least once and try again!")
+        return
+
+    messagebox.showinfo("Success", "File selected successfully!")
+    manage_fullscreen(path_dir_ext, path_dir_fs_cfg)
+    fps_value(path_dir_ext, path_dir_fs_cfg)
 
 
 def manage_fullscreen(db_directory, path_dir_fs_cfg) -> None:
