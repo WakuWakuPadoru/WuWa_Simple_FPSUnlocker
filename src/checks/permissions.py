@@ -4,9 +4,17 @@ from tkinter import messagebox
 
 
 def check_isvalid_process() -> bool:
-    if any(item in ["launcher.exe", "Wuthering Waves.exe"] for item in
-           [p.name() for p in psutil.process_iter(attrs=['name'])]):
-        messagebox.showerror("Error", "Please close the game before proceeding.")
+    check_variables = ["launcher.exe", "Wuthering Waves.exe"]
+    PIDs = []
+    process_running_check = False
+    for process in psutil.process_iter():
+        if process.name() in check_variables:
+            PIDs.append(str(process.pid))
+            process_running_check = True
+    if process_running_check is True:
+        PID_joined = "\n".join(PIDs)
+        messagebox.showerror("Error",
+                             f"Please close the game before proceeding.\n\nThe Unlocker checks if either \"launcher.exe\" or \"Wuthering Waves.exe is currently running.\"\n\nProcess IDs:\n{PID_joined}")
         return False
     else:
         return True
