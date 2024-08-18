@@ -1,6 +1,5 @@
 import configparser
 import sqlite3
-import json
 import webbrowser
 import glob
 import os
@@ -106,12 +105,10 @@ def manage_fullscreen(db_directory, path_dir_fs_cfg) -> None:
                 db = sqlite3.connect(
                     Path(db_directory).joinpath("LocalStorage.db"))
                 cursor = db.cursor()
-                cursor.execute("SELECT * FROM LocalStorage WHERE Key = 'GameQualitySetting'")
-                json_value = json.loads(cursor.fetchone()[1])
-                json_value["KeyPcResolutionWidth"] = x
-                json_value["KeyPcResolutionHeight"] = y
-                cursor.execute("UPDATE LocalStorage SET Value = ? WHERE Key = 'GameQualitySetting'",
-                               (json.dumps(json_value),))
+                cursor.execute("UPDATE LocalStorage SET Value = ? WHERE Key = 'PcResolutionWidth'",
+                               (str(x),))
+                cursor.execute("UPDATE LocalStorage SET Value = ? WHERE Key = 'PcResolutionHeight'",
+                               (str(y),))
                 db.commit()
                 db.close()
                 config.set("/Script/Engine.GameUserSettings", "lastuserconfirmedresolutionsizex", str(x))
@@ -161,11 +158,8 @@ def fps_value(db_directory, path_dir_fs_cfg) -> None:
             db = sqlite3.connect(
                 Path(db_directory).joinpath("LocalStorage.db"))
             cursor = db.cursor()
-            cursor.execute("SELECT * FROM LocalStorage WHERE Key = 'GameQualitySetting'")
-            json_value = json.loads(cursor.fetchone()[1])
-            json_value["KeyCustomFrameRate"] = fps
-            cursor.execute("UPDATE LocalStorage SET Value = ? WHERE Key = 'GameQualitySetting'",
-                           (json.dumps(json_value),))
+            cursor.execute("UPDATE LocalStorage SET Value = ? WHERE Key = 'CustomFrameRate'",
+                           (fps,))
             messagebox.OK = messagebox.showinfo("Success",
                                                 "FPS Value changed successfully! You can now close this program and enjoy the game!")
             db.commit()
