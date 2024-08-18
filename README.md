@@ -1,5 +1,7 @@
 # Wuthering Waves (WuWa) Simple FPS Unlocker
 
+## Updated on 18th August, works with 1.20 ##
+
 ## Introduction
 
 This is a simple FPS Unlocker that can be used to **push Wuthering Waves's max FPS cap beyond the default 60 FPS regardless of your Graphics Card / GPU**.
