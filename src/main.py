@@ -18,10 +18,10 @@ def main() -> int:
                                         "\n\nWould you like to restart the program with Admin Rights?"
                                         "\n\nIn most cases, this is not required.")
         if ask_admin is True:
-            ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None,
-                                                1)  # IDE
-            # ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv[1:]),
-            #                                     None, 1)  # EXE
+            # ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None,
+            #                                     1)  # IDE
+            ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv[1:]),
+                                                None, 1)  # EXE
             sys.exit()
         else:
             pass
