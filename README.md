@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is a simple FPS Unlocker that can be used to **push Wuthering Waves's max FPS cap beyond the default 60 FPS regardless of your Graphics Card/GPU**.
+This is a simple FPS Unlocker that can be used to **push Wuthering Waves's max FPS cap beyond the default 60 FPS regardless of your Graphics Card / GPU**.
 it also allows you to **enable True Full Screen Mode / Exclusive Full Screen** and **set your desired Full Screen
 Resolution**, which is not available in the game's settings.
 This Unlocker is designed to be **simple to use** without much frills. Automated checks and scripts mean that you can
@@ -24,7 +24,7 @@ belong to their respective copyright holders and owners.**
 - Simple to use UI, no need for command prompts or CLI. Just run the program / exe and navigate the UI with buttons and
   mouse
   clicks!
-- Input your own desired FPS cap regardless of your Graphics Card/GPU. [25 - 120 FPS]
+- Input your own desired FPS cap regardless of your Graphics Card / GPU. [25 - 120 FPS]
 - Enable True Full Screen Mode / Exclusive Full Screen for potentially better performance, better smoothness, less stuttering, and
   less hitching.
 - Set your desired Full Screen Resolution. For example, something lower than your Monitor's native resolution while still in Full Screen for some extra Performance! The game doesn't allow this by default but the unlocker allows you to do this!
