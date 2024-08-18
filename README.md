@@ -27,7 +27,7 @@ belong to their respective copyright holders and owners.**
 - Input your own desired FPS cap. [25 - 120 FPS]
 - Enable True Full Screen Mode / Exclusive Full Screen for potentially better performance, better smoothness, less stuttering, and
   less hitching.
-- Set your desired Full Screen Resolution.
+- Set your desired Full Screen Resolution. For example, something lower than your Monitor's native resolution while still in Full Screen for some extra Performance! The game doesn't allow this by default but the unlocker allows you to do this!
 - Program will notify you whenever there are updates available!
 - No additional installations or dependencies required (apart from Wuthering Waves). Just download and run the program!
 - Light-weight and simple. No modifications to the game files, just the settings file.
