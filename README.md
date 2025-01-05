@@ -3,6 +3,7 @@
 ## Introduction
 
 **Updated on 18th August, works with the latest/current version 1.20, including the True Full Screen Mode and Resolution options.**
+**Pending Update for 2.0, Investigating and Updating if required.**
 
 This is a simple FPS Unlocker that can be used to **push Wuthering Waves's max FPS cap beyond the default 60 FPS regardless of your Graphics Card / GPU**.
 it also allows you to **enable True Full Screen Mode / Exclusive Full Screen** and **set your desired Full Screen
