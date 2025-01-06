@@ -2,7 +2,7 @@
 
 ## Introduction
 
-**Updated for 2.0!!!**
+### **Updated for 2.0!!!**
 
 This is a simple FPS Unlocker that can be used to **push Wuthering Waves's max FPS cap beyond the default 60 FPS
 regardless of your Graphics Card / GPU**.
