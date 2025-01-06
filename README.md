@@ -2,17 +2,16 @@
 
 ## Introduction
 
-**Pending Update for 2.0, Investigating and Updating if required.**
+**Updated for 2.0!!!**
 
-This is a simple FPS Unlocker that can be used to **push Wuthering Waves's max FPS cap beyond the default 60 FPS regardless of your Graphics Card / GPU**.
-it also allows you to **enable True Full Screen Mode / Exclusive Full Screen** and **set your desired Full Screen
-Resolution**, which is not available in the game's settings.
+This is a simple FPS Unlocker that can be used to **push Wuthering Waves's max FPS cap beyond the default 60 FPS
+regardless of your Graphics Card / GPU**.
 This Unlocker is designed to be **simple to use** without much frills. Automated checks and scripts mean that you can
 just
-run the program, and it will do the rest for you. It comes in a Windows exe executable format, so you just need to
+run the program, and it will do the rest for you along with comprehensive error checking. It comes in a Windows exe
+executable format, so you just need to
 download,
-extract, and run! Mac OS support is planned for the future when the game comes out on Mac, but that is subject to
-change.
+extract, and run!
 
 If you find this useful, do consider giving this project a star and share it with your friends!
 
@@ -27,12 +26,15 @@ belong to their respective copyright holders and owners.**
   mouse
   clicks!
 - Input your own desired FPS cap regardless of your Graphics Card / GPU. [25 - 120 FPS]
-- Enable True Full Screen Mode / Exclusive Full Screen for potentially better performance, better smoothness, less stuttering, and
-  less hitching.
-- Set your desired Full Screen Resolution. For example, something lower than your Monitor's native resolution while still in Full Screen for some extra Performance! The game doesn't allow this by default but the unlocker allows you to do this!
-- Program will notify you whenever there are updates available!
+  ~~- Program will notify you whenever there are updates available!
 - No additional installations or dependencies required (apart from Wuthering Waves). Just download and run the program!
 - Light-weight and simple. No modifications to the game files, just the settings file.
+- ~~Enable True Full Screen Mode / Exclusive Full Screen for potentially better performance, better smoothness, less
+  stuttering, and
+  less hitching.~~
+- ~~Set your desired Full Screen Resolution. For example, something lower than your Monitor's native resolution while
+  still in Full Screen for some extra Performance! The game doesn't allow this by default but the unlocker allows you to
+  do this!~~~~
 
 ## Releases / Downloads
 
@@ -46,14 +48,21 @@ You can find the latest release [here](https://github.com/WakuWakuPadoru/WuWa_Si
 - Run the downloaded file :)
 - Win your 50s/50s!
 
-![Screenshot 0](https://i.imgur.com/tkU1FDY.png)
-![Screenshot 1](https://i.imgur.com/khhMH0V.png)
-![Screenshot 2](https://i.imgur.com/BbbcFCm.png)
-![Screenshot 3](https://i.imgur.com/SC56o6W.png)
-![Screenshot 4](https://i.imgur.com/tEOjNK2.png)
-![Screenshot 5](https://i.imgur.com/zJtpWeG.png)
-![Screenshot 6](https://i.imgur.com/NoedbV5.png)
-![Screenshot 7](https://i.imgur.com/p3OrHFq.png)
+#### Before:
+
+![Before](https://i.imgur.com/gugs73w.jpeg)
+
+#### After:
+
+![After](https://i.imgur.com/CyeQKx2.png)
+
+##### (Note: The FPS counter is from MSI Afterburner, not the game itself) After the Unlocker is applied, it will show the Frame Rate as 30 FPS which is false.
+![Menu](https://i.imgur.com/u38w5YX.png)
+## Screenshots:
+![Screenshot 0](https://i.imgur.com/Aret8iY.png)
+![Screenshot 1](https://i.imgur.com/evBWUrr.png)
+![Screenshot 2](https://i.imgur.com/vrokAwt.png)
+![Screenshot 3](https://i.imgur.com/tGMRk8h.png)
 
 ## Technology
 
