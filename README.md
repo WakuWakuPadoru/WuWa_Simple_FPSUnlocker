@@ -26,7 +26,7 @@ belong to their respective copyright holders and owners.**
   mouse
   clicks!
 - Input your own desired FPS cap regardless of your Graphics Card / GPU. [25 - 120 FPS]
-  ~~- Program will notify you whenever there are updates available!
+- Program will notify you whenever there are updates available!
 - No additional installations or dependencies required (apart from Wuthering Waves). Just download and run the program!
 - Light-weight and simple. No modifications to the game files, just the settings file.
 - ~~Enable True Full Screen Mode / Exclusive Full Screen for potentially better performance, better smoothness, less
