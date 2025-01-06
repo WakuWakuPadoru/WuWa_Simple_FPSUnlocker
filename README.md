@@ -34,7 +34,7 @@ belong to their respective copyright holders and owners.**
   less hitching.~~
 - ~~Set your desired Full Screen Resolution. For example, something lower than your Monitor's native resolution while
   still in Full Screen for some extra Performance! The game doesn't allow this by default but the unlocker allows you to
-  do this!~~~~
+  do this!~~
 
 ## Releases / Downloads
 
