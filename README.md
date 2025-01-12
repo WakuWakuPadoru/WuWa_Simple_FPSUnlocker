@@ -15,6 +15,8 @@ extract, and run!
 
 If you find this useful, do consider giving this project a star and share it with your friends!
 
+**This Unlocker doesn't modify or interact with any of the Game Files and Assets! It only modifies settings and configurations on the user's behalf. This is 100% safe and won't result in a ban.**
+
 **Wuthering Waves is a game developed by Kuro Games, and this project is not affiliated with them in any way. All rights
 belong to their respective copyright holders and owners.**
 
