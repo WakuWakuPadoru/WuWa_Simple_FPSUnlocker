@@ -66,6 +66,18 @@ You can find the latest release [here](https://github.com/WakuWakuPadoru/WuWa_Si
 ![Screenshot 2](https://i.imgur.com/vrokAwt.png)
 ![Screenshot 3](https://i.imgur.com/tGMRk8h.png)
 
+## FAQ
+### Didn't Kuro Games already officially allow 120 FPS?
+Yes, but they only officially allow certain specific hardware to use this officially. Even if your PC is perfectly powerful enough to run it, if it's not on the White List, you can't run the game, particularly on AMD Ryzen PCs.
+### Why did Kuro Games only allow specific hardware to run 120 FPS officially?
+I don't know.
+### Is this safe?
+Yes. This only modifies the game's configuration and settings on the user's behalf, and not the game files. Whenever you make changes to the game's settings via in-game, these very same files are the ones that are saved and updated.
+### Version X.X just came out, why isn't the Unlocker working?
+It isn't uncommon for Kuro Games to update the format and structure of the configuration files between versions. As these changes are never documented and might be "spaghetti" in nature, it might take a few days to investigate and implement an updated solution.
+### I have issues with the Unlocker and/or would like to provide feedback and suggestions.
+You can post it either in [Discussions](https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/discussions) or [Issues](https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues).
+
 ## Technology
 
 This project is built using Python and Tkinter for the UI. It checks and modifies the game's configuration files to
