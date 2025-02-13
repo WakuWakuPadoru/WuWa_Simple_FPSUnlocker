@@ -73,6 +73,8 @@ You can find the latest release [here](https://github.com/WakuWakuPadoru/WuWa_Si
 ## FAQ
 ### Didn't Kuro Games already officially allow 120 FPS?
 Yes, but they only officially allow certain specific hardware to use this officially. Even if your PC is perfectly powerful enough to run it, if it's not on the White List, you can't run the game, particularly on AMD Ryzen PCs.
+### Even though I don't have an RTX 4000 series and newer, can I enable Raytracing?
+Yes. Though..you would still require an RT-capable GPU, something like an RX 6600 or an RTX 2060. You won't be able to run this on a GTX 1080 for instance.
 ### Why did Kuro Games only allow specific hardware to run 120 FPS officially?
 I don't know.
 ### Is this safe?
