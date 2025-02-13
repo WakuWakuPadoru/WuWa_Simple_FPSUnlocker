@@ -54,6 +54,9 @@ You can find the latest release [here](https://github.com/WakuWakuPadoru/WuWa_Si
 - Run the downloaded file :)
 - Win your 50s/50s!
 
+#### Before/After Raytracing on 2080Ti
+![img](https://i.imgur.com/kELEp7N.jpeg)
+
 #### Before:
 
 ![Before](https://i.imgur.com/hVF6LN4.jpeg)
