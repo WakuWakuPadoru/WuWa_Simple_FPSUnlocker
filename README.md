@@ -1,14 +1,14 @@
-# Wuthering Waves (WuWa) Simple FPS Unlocker
+# Wuthering Waves (WuWa) Simple FPS Unlocker Toolkit
 
 ## Introduction
 
 ### **Updated for 2.1 - As of 13th February 2025**
-### **Enable RT on RTX 3000 and Below [COMING SOON]**
+### **Unlock FPS up to 120 FPS AND Enable RT on AMD/Older Nvidia GPUs**
 
 This project is being **actively updated** and **maintained**. 
 
-This is a simple FPS Unlocker that can be used to **push Wuthering Waves's max FPS cap beyond the default 60 FPS
-regardless of your Graphics Card / GPU**.
+This is a simple FPS Unlocker Toolkit that can be used to **push Wuthering Waves's max FPS cap beyond the default 60 FPS
+regardless of your Graphics Card / GPU**. It also gives you the option to **enable Raytracing on older Nvidia RTX GPUs and RT-Capable AMD GPUs**.
 This Unlocker is designed to be **simple to use** without much frills. Automated checks and scripts mean that you can
 just
 run the program, and it will do the rest for you along with comprehensive error checking. It comes in a Windows exe
@@ -31,6 +31,7 @@ belong to their respective copyright holders and owners.**
   mouse
   clicks!
 - Input your own desired FPS cap regardless of your Graphics Card / GPU. [25 - 120 FPS]
+- Manually enable Raytracing on GPUs older than the RTX 4000 series, allows you to set the Raytracing quality, Raytraced Reflections, and Raytraced Global Illumination.
 - Program will notify you whenever there are updates available!
 - No additional installations or dependencies required (apart from Wuthering Waves). Just download and run the program!
 - Light-weight and simple. No modifications to the game files, just the settings file.
