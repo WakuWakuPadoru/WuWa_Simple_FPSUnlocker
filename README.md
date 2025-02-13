@@ -2,7 +2,8 @@
 
 ## Introduction
 
-### **Updated for 2.0 - As of 7th January 2025**
+### **Updated for 2.1 - As of 13th February 2025**
+### **Enable RT on RTX 3000 and Below [COMING SOON]**
 
 This project is being **actively updated** and **maintained**. 
 
