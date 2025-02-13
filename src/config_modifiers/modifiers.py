@@ -3,16 +3,17 @@ import sqlite3
 import webbrowser
 import glob
 import os
-from tkinter import messagebox, simpledialog
+from tkinter import messagebox, simpledialog, Tk, StringVar, OptionMenu, Label, Checkbutton, Button
 from tkinter.filedialog import askopenfilename
 from pathlib import Path
 
 from checks.permissions import check_isvalid_process
 
 config = configparser.ConfigParser()
+engine_config = configparser.ConfigParser(strict=False)
 
 
-def choose_directory() -> None:
+def choose_directory(action, root_window) -> None:
     if check_isvalid_process() is True:
         directory = askopenfilename(initialdir="C:/Wuthering Waves/Wuthering Waves Game/",
                                     title="Select where \"Wuthering Waves.exe\" is located.",
@@ -22,6 +23,8 @@ def choose_directory() -> None:
             path_dir_ext = Path(directory).parent.joinpath("Client", "Saved", "LocalStorage")
             path_dir_fs_cfg = Path(directory).parent.joinpath("Client", "Saved", "Config", "WindowsNoEditor",
                                                               "GameUserSettings.ini")
+            path_dir_rt_cfg = Path(directory).parent.joinpath("Client", "Saved", "Config", "WindowsNoEditor",
+                                                              "Engine.ini")
             if path_dir_ext.is_dir() and path_dir_exe.is_file():
                 matching_files = sorted(glob.glob(str(path_dir_ext) + "/LocalStorage*.db"))
                 matching_files_oos = "\n".join(matching_files)
@@ -44,7 +47,10 @@ def choose_directory() -> None:
                 else:
                     messagebox.showinfo("Success", "File selected successfully!")
                     # manage_fullscreen(path_dir_ext, path_dir_fs_cfg) # No longer possible due to Kuro games.
-                    fps_value(path_dir_ext, path_dir_fs_cfg)
+                    if action == "unlockFPS":
+                        fps_value(path_dir_ext, path_dir_fs_cfg)
+                    elif action == "raytracing":
+                        raytracing_settings(path_dir_ext, path_dir_rt_cfg, root_window)
             else:
                 messagebox.showerror("Error",
                                      "LocalStorage file not found. Please run the game at least once and try again!")
@@ -178,6 +184,132 @@ def fps_value(db_directory, path_dir_fs_cfg) -> None:
                                  f"An error occurred. Please raise an issue or contact me on the GitHub Page with the following message: \n\n{e}")
             webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
 
+    except Exception as e:
+        messagebox.showerror("Error",
+                             f"An error occurred. Please raise an issue or contact me on the GitHub Page with the following message: \n\n{e}")
+        webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
+
+
+def raytracing_settings(db_directory, path_dir_rt_cfg, root_window) -> None:
+    try:
+        engine_config.read(path_dir_rt_cfg)
+        if engine_config.has_section("/Script/Engine.RendererRTXSettings") is False:
+            engine_config.add_section("/Script/Engine.RendererRTXSettings")
+        ask_RT = messagebox.askyesno("Enable Raytracing?",
+                                     "Do you want to enable or disable Raytracing? \n\nYou will get lower FPS with Raytracing enabled. \n\nIt is recommended to have at least a RTX 2000 series or a RX 6000 series GPU for compatibility with DX12 Ultimate. \n\nClick Yes to access the Raytracing Options or No to disable Raytracing.")
+        if ask_RT is True:
+            root_window.withdraw()
+            rt_window = Tk()
+            rt_window.title("Raytracing Options")
+            rt_window.geometry('400x200')
+            preset_label = Label(rt_window, text="Select Raytracing Quality", font=("Bahnschrift", 12))
+            preset_label.pack()
+            rt_list = ["Low", "Medium", "High"]
+            values_set = StringVar(rt_window)
+            values_set.set("Low")
+            question_menu = OptionMenu(rt_window, values_set, *rt_list)
+            question_menu.pack()
+            reflections_value = StringVar(rt_window)
+            reflections_value.set(0)
+            rtgi_value = StringVar(rt_window)
+            rtgi_value.set(0)
+            reflections = Checkbutton(rt_window, text="Enable Raytracing Reflections", variable=reflections_value,
+                                      onvalue=1, offvalue=0,
+                                      font=("Bahnschrift", 12))
+            reflections.pack(pady=(20, 0))
+            rtgi = Checkbutton(rt_window, text="Enable Raytracing Global Illumination", variable=rtgi_value, onvalue=1,
+                               offvalue=0,
+                               font=("Bahnschrift", 12))
+            rtgi.pack()
+            submit_button = Button(rt_window, text='Submit',
+                                   command=lambda: raytracing_apply(db_directory, path_dir_rt_cfg, root_window,
+                                                                    values_set.get(), reflections_value.get(),
+                                                                    rtgi_value.get()),
+                                   font=("Bahnschrift", 12))
+            submit_button.pack(pady=(20, 0))
+        else:
+            db = sqlite3.connect(
+                Path(db_directory).joinpath("LocalStorage.db"))
+            cursor = db.cursor()
+            cursor.execute("UPDATE LocalStorage SET Value = ? WHERE Key = 'RayTracing'",
+                           (0,))
+            cursor.execute("UPDATE LocalStorage SET Value = ? WHERE Key = 'RayTracedReflection'",
+                           (0,))
+            cursor.execute("UPDATE LocalStorage SET Value = ? WHERE Key = 'RayTracedGI'",
+                           (0,))
+            db.commit()
+            db.close()
+            engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing", str(0))
+            engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing.LimitDevice", str(1))
+            engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing.EnableInGame", str(0))
+            engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing.EnableOnDemand", str(0))
+            engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing.EnableInEditor", str(0))
+            with open(path_dir_rt_cfg, "w") as configfile:
+                engine_config.write(configfile)
+            messagebox.showinfo("Success", "Raytracing disabled successfully!")
+    except TypeError as e:
+        if str(e) == "'NoneType' object is not subscriptable":
+            messagebox.showerror("Error",
+                                 "Your LocalStorage file is incomplete. Please run the game at least once and try again!")
+        else:
+            messagebox.showerror("Error",
+                                 f"An error occurred. Please raise an issue or contact me on the GitHub Page with the following message: \n\n{e}")
+            webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
+    except Exception as e:
+        messagebox.showerror("Error",
+                             f"An error occurred. Please raise an issue or contact me on the GitHub Page with the following message: \n\n{e}")
+        webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
+
+
+def raytracing_apply(db_directory, path_dir_rt_cfg, root_window, rt, rtref, rtgi) -> None:
+    engine_config.read(path_dir_rt_cfg)
+    try:
+        rt_value = None
+        rtref_value = None
+        rtgi_value = None
+        if rt == "Low":
+            rt_value = 1
+        elif rt == "Medium":
+            rt_value = 2
+        elif rt == "High":
+            rt_value = 3
+        if rtref == "1":
+            rtref_value = 1
+        else:
+            rtref_value = 0
+        if rtgi == "1":
+            rtgi_value = 1
+        else:
+            rtgi_value = 0
+        db = sqlite3.connect(
+            Path(db_directory).joinpath("LocalStorage.db"))
+        cursor = db.cursor()
+        cursor.execute("UPDATE LocalStorage SET Value = ? WHERE Key = 'RayTracing'",
+                       (rt_value,))
+        cursor.execute("UPDATE LocalStorage SET Value = ? WHERE Key = 'RayTracedReflection'",
+                       (rtref_value,))
+        cursor.execute("UPDATE LocalStorage SET Value = ? WHERE Key = 'RayTracedGI'",
+                       (rtgi_value,))
+        db.commit()
+        db.close()
+        engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing", str(1))
+        engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing.LimitDevice", str(0))
+        engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing.EnableInGame", str(1))
+        engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing.EnableOnDemand", str(1))
+        engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing.EnableInEditor", str(1))
+        with open(path_dir_rt_cfg, "w") as configfile:
+            engine_config.write(configfile)
+        root_window.destroy()
+        messagebox.showinfo("Success", "Raytracing settings applied successfully!")
+        messagebox.showinfo("Info", "You can now close this program and enjoy the game!")
+    except TypeError as e:
+        if str(e) == "'NoneType' object is not subscriptable":
+            messagebox.showerror("Error",
+                                 "Your LocalStorage file is incomplete. Please run the game at least once and try again!")
+        else:
+            messagebox.showerror("Error",
+                                 f"An error occurred. Please raise an issue or contact me on the GitHub Page with the following message: \n\n{e}")
+            webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
     except Exception as e:
         messagebox.showerror("Error",
                              f"An error occurred. Please raise an issue or contact me on the GitHub Page with the following message: \n\n{e}")
