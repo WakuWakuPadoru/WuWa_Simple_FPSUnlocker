@@ -224,7 +224,7 @@ def raytracing_settings(db_directory, path_dir_rt_cfg, root_window) -> None:
             submit_button = Button(rt_window, text='Submit',
                                    command=lambda: raytracing_apply(db_directory, path_dir_rt_cfg, root_window,
                                                                     values_set.get(), reflections_value.get(),
-                                                                    rtgi_value.get()),
+                                                                    rtgi_value.get(), rt_window),
                                    font=("Bahnschrift", 12))
             submit_button.pack(pady=(20, 0))
         else:
@@ -261,7 +261,7 @@ def raytracing_settings(db_directory, path_dir_rt_cfg, root_window) -> None:
         webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
 
 
-def raytracing_apply(db_directory, path_dir_rt_cfg, root_window, rt, rtref, rtgi) -> None:
+def raytracing_apply(db_directory, path_dir_rt_cfg, root_window, rt, rtref, rtgi, rt_window) -> None:
     engine_config.read(path_dir_rt_cfg)
     try:
         rt_value = None
@@ -302,6 +302,7 @@ def raytracing_apply(db_directory, path_dir_rt_cfg, root_window, rt, rtref, rtgi
         root_window.destroy()
         messagebox.showinfo("Success", "Raytracing settings applied successfully!")
         messagebox.showinfo("Info", "You can now close this program and enjoy the game!")
+        rt_window.destroy()
     except TypeError as e:
         if str(e) == "'NoneType' object is not subscriptable":
             messagebox.showerror("Error",
