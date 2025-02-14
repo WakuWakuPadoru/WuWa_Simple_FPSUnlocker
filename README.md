@@ -68,7 +68,8 @@ You can find the latest release [here](https://github.com/WakuWakuPadoru/WuWa_Si
 ##### (Note: The FPS counter is from MSI Afterburner, not the game itself) After the Unlocker is applied, it will show the Frame Rate as 30 FPS which is false.
 ![Menu](https://i.imgur.com/PXQurCx.png)
 ## Screenshots:
-![Screenshot 0](https://i.imgur.com/Aret8iY.png)
+![Screenshot 0](https://i.imgur.com/6Kc06vY.png)
+![Screenshot 0.5](https://i.imgur.com/nJrkgIi.png)
 ![Screenshot 1](https://i.imgur.com/evBWUrr.png)
 ![Screenshot 2](https://i.imgur.com/vrokAwt.png)
 ![Screenshot 3](https://i.imgur.com/tGMRk8h.png)
