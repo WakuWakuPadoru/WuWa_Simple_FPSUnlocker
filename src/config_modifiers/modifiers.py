@@ -206,13 +206,13 @@ def raytracing_settings(db_directory, path_dir_rt_cfg, root_window) -> None:
             preset_label.pack()
             rt_list = ["Low", "Medium", "High"]
             values_set = StringVar(rt_window)
-            values_set.set("Low")
+            values_set.set("High")
             question_menu = OptionMenu(rt_window, values_set, *rt_list)
             question_menu.pack()
             reflections_value = StringVar(rt_window)
-            reflections_value.set(0)
+            reflections_value.set(1)
             rtgi_value = StringVar(rt_window)
-            rtgi_value.set(0)
+            rtgi_value.set(1)
             reflections = Checkbutton(rt_window, text="Enable Raytracing Reflections", variable=reflections_value,
                                       onvalue=1, offvalue=0,
                                       font=("Bahnschrift", 12))
