@@ -290,6 +290,10 @@ def raytracing_apply(db_directory, path_dir_rt_cfg, root_window, rt, rtref, rtgi
                        (rtref_value,))
         cursor.execute("UPDATE LocalStorage SET Value = ? WHERE Key = 'RayTracedGI'",
                        (rtgi_value,))
+        cursor.execute("UPDATE LocalStorage SET Value = ? WHERE Key = 'XessEnable'",
+                       (0,))
+        cursor.execute("UPDATE LocalStorage SET Value = ? WHERE Key = 'XessQuality'",
+                       (0,))
         db.commit()
         db.close()
         engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing", str(1))
