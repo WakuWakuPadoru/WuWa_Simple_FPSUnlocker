@@ -304,7 +304,8 @@ def raytracing_apply(db_directory, path_dir_rt_cfg, root_window, rt, rtref, rtgi
         with open(path_dir_rt_cfg, "w") as configfile:
             engine_config.write(configfile)
         root_window.destroy()
-        messagebox.showinfo("Success", "Raytracing settings applied successfully!")
+        messagebox.showinfo("Success",
+                            "Raytracing settings applied successfully!\n\nRestart the game once or twice for the settings to take effect.")
         messagebox.showinfo("Info", "You can now close this program and enjoy the game!")
         rt_window.destroy()
     except TypeError as e:
