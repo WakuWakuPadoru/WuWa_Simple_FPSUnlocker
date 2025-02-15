@@ -1,14 +1,14 @@
-# Wuthering Waves (WuWa) Simple FPS Unlocker
+# Wuthering Waves (WuWa) Simple FPS Unlocker Toolkit
 
 ## Introduction
 
 ### **Updated for 2.1 - As of 13th February 2025**
-### **Enable RT on RTX 3000 and Below [COMING SOON]**
+### **Unlock FPS up to 120 FPS AND Enable Raytracing/RT on AMD/Older Nvidia GPUs**
 
 This project is being **actively updated** and **maintained**. 
 
-This is a simple FPS Unlocker that can be used to **push Wuthering Waves's max FPS cap beyond the default 60 FPS
-regardless of your Graphics Card / GPU**.
+This is a simple FPS Unlocker Toolkit that can be used to **push Wuthering Waves's max FPS cap beyond the default 60 FPS
+regardless of your Graphics Card / GPU**. It also gives you the option to **enable Raytracing on older Nvidia RTX GPUs and RT-Capable AMD GPUs**.
 This Unlocker is designed to be **simple to use** without much frills. Automated checks and scripts mean that you can
 just
 run the program, and it will do the rest for you along with comprehensive error checking. It comes in a Windows exe
@@ -31,6 +31,7 @@ belong to their respective copyright holders and owners.**
   mouse
   clicks!
 - Input your own desired FPS cap regardless of your Graphics Card / GPU. [25 - 120 FPS]
+- Manually enable Raytracing on GPUs older than the RTX 4000 series, allows you to set the Raytracing quality, Raytraced Reflections, and Raytraced Global Illumination.
 - Program will notify you whenever there are updates available!
 - No additional installations or dependencies required (apart from Wuthering Waves). Just download and run the program!
 - Light-weight and simple. No modifications to the game files, just the settings file.
@@ -53,6 +54,9 @@ You can find the latest release [here](https://github.com/WakuWakuPadoru/WuWa_Si
 - Run the downloaded file :)
 - Win your 50s/50s!
 
+#### Before/After Raytracing on 2080Ti
+![img](https://i.imgur.com/kELEp7N.jpeg)
+
 #### Before:
 
 ![Before](https://i.imgur.com/hVF6LN4.jpeg)
@@ -64,7 +68,8 @@ You can find the latest release [here](https://github.com/WakuWakuPadoru/WuWa_Si
 ##### (Note: The FPS counter is from MSI Afterburner, not the game itself) After the Unlocker is applied, it will show the Frame Rate as 30 FPS which is false.
 ![Menu](https://i.imgur.com/PXQurCx.png)
 ## Screenshots:
-![Screenshot 0](https://i.imgur.com/Aret8iY.png)
+![Screenshot 0](https://i.imgur.com/6Kc06vY.png)
+![Screenshot 0.5](https://i.imgur.com/nJrkgIi.png)
 ![Screenshot 1](https://i.imgur.com/evBWUrr.png)
 ![Screenshot 2](https://i.imgur.com/vrokAwt.png)
 ![Screenshot 3](https://i.imgur.com/tGMRk8h.png)
@@ -72,6 +77,8 @@ You can find the latest release [here](https://github.com/WakuWakuPadoru/WuWa_Si
 ## FAQ
 ### Didn't Kuro Games already officially allow 120 FPS?
 Yes, but they only officially allow certain specific hardware to use this officially. Even if your PC is perfectly powerful enough to run it, if it's not on the White List, you can't run the game, particularly on AMD Ryzen PCs.
+### Even though I don't have an RTX 4000 series and newer, can I enable Raytracing?
+Yes. Though..you would still require an RT-capable GPU, something like an RX 6600 or an RTX 2060. You won't be able to run this on a GTX 1080 for instance.
 ### Why did Kuro Games only allow specific hardware to run 120 FPS officially?
 I don't know.
 ### Is this safe?
