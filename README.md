@@ -43,7 +43,7 @@ belong to their respective copyright holders and owners.**
   do this!~~
 
 ## Ray Tracing on the AMD Radeon RX 9070 XT GPU
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/eC3GD_3-_SA/0.jpg)](https://www.youtube.com/watch?v=eC3GD_3-_SA)
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/aV7NE15RSnY/0.jpg)](https://www.youtube.com/watch?v=aV7NE15RSnY)
 
 
 ## Releases / Downloads
