@@ -42,6 +42,10 @@ belong to their respective copyright holders and owners.**
   still in Full Screen for some extra Performance! The game doesn't allow this by default but the unlocker allows you to
   do this!~~
 
+## Ray Tracing on the AMD Radeon RX 9070 XT GPU
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/eC3GD_3-_SA/0.jpg)](https://www.youtube.com/watch?v=eC3GD_3-_SA)
+
+
 ## Releases / Downloads
 
 You can find the latest release [here](https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/releases/latest).
