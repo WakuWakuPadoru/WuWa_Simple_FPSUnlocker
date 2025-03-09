@@ -31,7 +31,7 @@ belong to their respective copyright holders and owners.**
   mouse
   clicks!
 - Input your own desired FPS cap regardless of your Graphics Card / GPU. [25 - 120 FPS]
-- Manually enable Raytracing on GPUs older than the RTX 4000 series, allows you to set the Raytracing quality, Raytraced Reflections, and Raytraced Global Illumination.
+- Manually enable Raytracing on GPUs older than the RTX 4000 series or AMD RX 6000 series and up, allows you to set the Raytracing quality, Raytraced Reflections, and Raytraced Global Illumination.
 - Program will notify you whenever there are updates available!
 - No additional installations or dependencies required (apart from Wuthering Waves). Just download and run the program!
 - Light-weight and simple. No modifications to the game files, just the settings file.
