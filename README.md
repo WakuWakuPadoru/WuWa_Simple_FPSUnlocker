@@ -2,8 +2,8 @@
 
 ## Introduction
 
-### **Updated for 2.1 - As of 13th February 2025**
-### **Unlock FPS up to 120 FPS AND Enable Raytracing/RT on AMD/Older Nvidia GPUs**
+### **As of 2.2, Unlocking FPS no longer works.**
+### **Enable Raytracing/RT on AMD/Older Nvidia GPUs**
 
 This project is being **actively updated** and **maintained**. 
 
