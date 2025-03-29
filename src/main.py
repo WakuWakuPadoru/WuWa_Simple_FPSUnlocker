@@ -9,7 +9,7 @@ from config_modifiers.modifiers import *
 def main() -> int:
     root_window = Tk()
     root_window.title(f"Wuthering Waves FPS Unlocker v{version}")
-    root_window.geometry("700x450")
+    root_window.geometry("650x550")
     root_window.iconbitmap(default=find_ico_path(r"icon.ico"))
     root_window.withdraw()
     if not admin_check():
@@ -34,7 +34,8 @@ def main() -> int:
                                     "It should be located in a folder called \"Wuthering Waves Game\" in your game installation folder."
                                     "\n\nMake sure that the game isn't running!"
                                     "\n\n1) You may need to run this program again when you change graphical settings or when there's a new patch."
-                                    "\n2) This doesn't change the game files in any way, only your saved \"settings\".",
+                                    "\n2) This doesn't change the game files in any way, only your saved \"settings\"."
+                                    "\n\nDue to the 2.2 Update, you may need to restart the game twice after using the FPS Unlocker if it doesn't work the first time",
                   font=("Bahnschrift", 14), wraplength=590, justify=CENTER)
 
     label.pack()

@@ -3,6 +3,7 @@ import sqlite3
 import webbrowser
 import glob
 import os
+import json
 from tkinter import messagebox, simpledialog, Tk, StringVar, OptionMenu, Label, Checkbutton, Button
 from tkinter.filedialog import askopenfilename
 from pathlib import Path
@@ -158,14 +159,92 @@ def choose_directory(action, root_window) -> None:
 
 def fps_value(db_directory, path_dir_fs_cfg) -> None:
     try:
-        fps = simpledialog.askinteger(title="", prompt="Choose your desired FPS Value:\t\t\t", initialvalue=90,
-                                      minvalue=25, maxvalue=120)
+        # fps = simpledialog.askinteger(title="", prompt="Choose your desired FPS Value:\t\t\t", initialvalue=90,
+        #                               minvalue=25, maxvalue=120)
+        messagebox.showinfo("INFORMATION", "Due to the 2.2 Update, the FPS Unlocker is now set to 120 FPS.")
+        fps = 120
         if fps is not None:
             db = sqlite3.connect(
                 Path(db_directory).joinpath("LocalStorage.db"))
             cursor = db.cursor()
-            cursor.execute("UPDATE LocalStorage SET Value = ? WHERE Key = 'CustomFrameRate'",
-                           (fps,))
+            # Create data structures
+            menu_data_dict = {
+                "___MetaType___": "___Map___",
+                "Content": [
+                    [1, 100], [2, 100], [3, 100], [4, 100], [5, 0], [6, 0],
+                    [7, -0.4658685302734375], [10, 3], [11, 3], [20, 0], [21, 0],
+                    [22, 0], [23, 0], [24, 0], [25, 0], [26, 0], [27, 0], [28, 0],
+                    [29, 0], [30, 0], [31, 0], [32, 0], [33, 0], [34, 0], [35, 0],
+                    [36, 0], [37, 0], [38, 0], [39, 0], [40, 0], [41, 0], [42, 0],
+                    [43, 0], [44, 0], [45, 0], [46, 0], [47, 0], [48, 0], [49, 0],
+                    [50, 0], [51, 1], [52, 1], [53, 0], [54, 3], [55, 1], [56, 2],
+                    [57, 1], [58, 1], [59, 1], [61, 0], [62, 0], [63, 1], [64, 1],
+                    [65, 0], [66, 0], [67, 3], [68, 2], [69, 100], [70, 100], [79, 1],
+                    [81, 0], [82, 1], [83, 1], [84, 0], [85, 0], [87, 0], [88, 0],
+                    [89, 50], [90, 50], [91, 50], [92, 50], [93, 1], [99, 0], [100, 30],
+                    [101, 0], [102, 1], [103, 0], [104, 50], [105, 0], [106, 0.3],
+                    [107, 0], [112, 0], [113, 0], [114, 0], [115, 0], [116, 0],
+                    [117, 0], [118, 0], [119, 0], [120, 0], [121, 1], [122, 1],
+                    [123, 0], [130, 0], [131, 0], [132, 1], [135, 1], [133, 0]
+                ]
+            }
+
+            play_menu_info_dict = {
+                "1": 100, "2": 100, "3": 100, "4": 100, "5": 0, "6": 0,
+                "7": -0.4658685302734375, "10": 3, "11": 3, "20": 0, "21": 0,
+                "22": 0, "23": 0, "24": 0, "25": 0, "26": 0, "27": 0, "28": 0,
+                "29": 0, "30": 0, "31": 0, "32": 0, "33": 0, "34": 0, "35": 0,
+                "36": 0, "37": 0, "38": 0, "39": 0, "40": 0, "41": 0, "42": 0,
+                "43": 0, "44": 0, "45": 0, "46": 0, "47": 0, "48": 0, "49": 0,
+                "50": 0, "51": 1, "52": 1, "53": 0, "54": 3, "55": 1, "56": 2,
+                "57": 1, "58": 1, "59": 1, "61": 0, "62": 0, "63": 1, "64": 1,
+                "65": 0, "66": 0, "67": 3, "68": 2, "69": 100, "70": 100, "79": 1,
+                "81": 0, "82": 1, "83": 1, "84": 0, "85": 0, "87": 0, "88": 0,
+                "89": 50, "90": 50, "91": 50, "92": 50, "93": 1, "99": 0, "100": 30,
+                "101": 0, "102": 1, "103": 0, "104": 50, "105": 0, "106": 0.3,
+                "107": 0, "112": 0, "113": 0, "114": 0, "115": 0, "116": 0,
+                "117": 0, "118": 0, "119": 0, "120": 0, "121": 1, "122": 1,
+                "123": 0, "130": 0, "131": 0, "132": 1
+            }
+
+            # Remove the trigger if it exists
+            cursor.execute("DROP TRIGGER IF EXISTS prevent_custom_frame_rate_update")
+
+            # Create the trigger to prevent updates to the CustomFrameRate value
+            trigger_sql = f"""
+                CREATE TRIGGER prevent_custom_frame_rate_update
+                AFTER UPDATE OF value ON LocalStorage
+                WHEN NEW.key = 'CustomFrameRate'
+                BEGIN
+                    UPDATE LocalStorage
+                    SET value = {fps}
+                    WHERE key = 'CustomFrameRate';
+                END;
+            """
+            cursor.execute(trigger_sql)
+
+            # Finally, update the FPS value
+            cursor.execute(
+                "UPDATE LocalStorage SET value = ? WHERE key = 'CustomFrameRate'",
+                (fps,)
+            )
+
+            # Delete the old data if it exists for a clean state
+            cursor.execute(
+                "DELETE FROM LocalStorage WHERE key IN ('MenuData', 'PlayMenuInfo')"
+            )
+
+            # Prepare the new data for insertion
+            insert_records = [
+                ('MenuData', json.dumps(menu_data_dict)),
+                ('PlayMenuInfo', json.dumps(play_menu_info_dict))
+            ]
+
+            # Batch insert the new data using parameterized queries
+            cursor.executemany(
+                "INSERT INTO LocalStorage (key, value) VALUES (?, ?)",
+                insert_records
+            )
             messagebox.OK = messagebox.showinfo("Success",
                                                 "FPS Value changed successfully! You can now close this program and enjoy the game!")
             db.commit()
@@ -231,12 +310,15 @@ def raytracing_settings(db_directory, path_dir_rt_cfg, root_window) -> None:
             db = sqlite3.connect(
                 Path(db_directory).joinpath("LocalStorage.db"))
             cursor = db.cursor()
-            cursor.execute("UPDATE LocalStorage SET Value = ? WHERE Key = 'RayTracing'",
-                           (0,))
-            cursor.execute("UPDATE LocalStorage SET Value = ? WHERE Key = 'RayTracedReflection'",
-                           (0,))
-            cursor.execute("UPDATE LocalStorage SET Value = ? WHERE Key = 'RayTracedGI'",
-                           (0,))
+            cursor.execute(
+                "INSERT INTO LocalStorage (Key, Value) VALUES ('RayTracing', ?) ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
+                (0,))
+            cursor.execute(
+                "INSERT INTO LocalStorage (Key, Value) VALUES ('RayTracedReflection', ?) ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
+                (0,))
+            cursor.execute(
+                "INSERT INTO LocalStorage (Key, Value) VALUES ('RayTracedGI', ?) ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
+                (0,))
             db.commit()
             db.close()
             engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing", str(0))
@@ -284,16 +366,21 @@ def raytracing_apply(db_directory, path_dir_rt_cfg, root_window, rt, rtref, rtgi
         db = sqlite3.connect(
             Path(db_directory).joinpath("LocalStorage.db"))
         cursor = db.cursor()
-        cursor.execute("UPDATE LocalStorage SET Value = ? WHERE Key = 'RayTracing'",
-                       (rt_value,))
-        cursor.execute("UPDATE LocalStorage SET Value = ? WHERE Key = 'RayTracedReflection'",
-                       (rtref_value,))
-        cursor.execute("UPDATE LocalStorage SET Value = ? WHERE Key = 'RayTracedGI'",
-                       (rtgi_value,))
-        cursor.execute("UPDATE LocalStorage SET Value = ? WHERE Key = 'XessEnable'",
-                       (0,))
-        cursor.execute("UPDATE LocalStorage SET Value = ? WHERE Key = 'XessQuality'",
-                       (0,))
+        cursor.execute(
+            "INSERT INTO LocalStorage (Key, Value) VALUES ('RayTracing', ?) ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
+            (rt_value,))
+        cursor.execute(
+            "INSERT INTO LocalStorage (Key, Value) VALUES ('RayTracedReflection', ?) ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
+            (rtref_value,))
+        cursor.execute(
+            "INSERT INTO LocalStorage (Key, Value) VALUES ('RayTracedGI', ?) ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
+            (rtgi_value,))
+        cursor.execute(
+            "INSERT INTO LocalStorage (Key, Value) VALUES ('XessEnable', ?) ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
+            (0,))
+        cursor.execute(
+            "INSERT INTO LocalStorage (Key, Value) VALUES ('XessQuality', ?) ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
+            (0,))
         db.commit()
         db.close()
         engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing", str(1))
