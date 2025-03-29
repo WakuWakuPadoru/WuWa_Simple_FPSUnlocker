@@ -16,9 +16,20 @@ engine_config = configparser.ConfigParser(strict=False)
 
 def choose_directory(action, root_window) -> None:
     if check_isvalid_process() is True:
-        directory = askopenfilename(initialdir="C:/Wuthering Waves/Wuthering Waves Game/",
+        game_dir = None
+        original_dir = "C:/Wuthering Waves/Wuthering Waves Game/"
+        new_dir = "C:/Program Files/Wuthering Waves"
+        if os.path.exists(original_dir) is True:
+            game_dir = original_dir
+        elif os.path.exists(new_dir) is True:
+            game_dir = new_dir
+        directory = askopenfilename(initialdir=game_dir,
                                     title="Select where \"Wuthering Waves.exe\" is located.",
                                     filetypes=[("exe files", "Wuthering Waves.exe")])
+        if "Program Files" in directory:
+            messagebox.showerror("Admin Rights",
+                                 "As your game is installed in Program Files, please run this program as an Administrator.")
+            exit()
         if directory is not None and directory != "":
             path_dir_exe = Path(directory).parent.joinpath("Wuthering Waves.exe")
             path_dir_ext = Path(directory).parent.joinpath("Client", "Saved", "LocalStorage")
@@ -27,7 +38,8 @@ def choose_directory(action, root_window) -> None:
             path_dir_rt_cfg = Path(directory).parent.joinpath("Client", "Saved", "Config", "WindowsNoEditor",
                                                               "Engine.ini")
             path_dir_client_config_rt_json = Path(directory).parent.joinpath("Client", "Config", "RTX.json")
-            path_dir_client_saved_sg_rt_json = Path(directory).parent.joinpath("Client", "Saved", "SaveGames", "RTX.json")
+            path_dir_client_saved_sg_rt_json = Path(directory).parent.joinpath("Client", "Saved", "SaveGames",
+                                                                               "RTX.json")
             if path_dir_ext.is_dir() and path_dir_exe.is_file():
                 matching_files = sorted(glob.glob(str(path_dir_ext) + "/LocalStorage*.db"))
                 matching_files_oos = "\n".join(matching_files)
@@ -53,7 +65,8 @@ def choose_directory(action, root_window) -> None:
                     if action == "unlockFPS":
                         fps_value(path_dir_ext, path_dir_fs_cfg)
                     elif action == "raytracing":
-                        raytracing_settings(path_dir_ext, path_dir_rt_cfg, path_dir_client_config_rt_json, path_dir_client_saved_sg_rt_json, root_window)
+                        raytracing_settings(path_dir_ext, path_dir_rt_cfg, path_dir_client_config_rt_json,
+                                            path_dir_client_saved_sg_rt_json, root_window)
             else:
                 messagebox.showerror("Error",
                                      "LocalStorage file not found. Please run the game at least once and try again!")
@@ -271,7 +284,8 @@ def fps_value(db_directory, path_dir_fs_cfg) -> None:
         webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
 
 
-def raytracing_settings(db_directory, path_dir_rt_cfg, path_dir_client_config_rt_json, path_dir_client_saved_sg_rt_json, root_window) -> None:
+def raytracing_settings(db_directory, path_dir_rt_cfg, path_dir_client_config_rt_json, path_dir_client_saved_sg_rt_json,
+                        root_window) -> None:
     try:
         engine_config.read(path_dir_rt_cfg)
         if engine_config.has_section("/Script/Engine.RendererRTXSettings") is False:
@@ -303,7 +317,9 @@ def raytracing_settings(db_directory, path_dir_rt_cfg, path_dir_client_config_rt
                                font=("Bahnschrift", 12))
             rtgi.pack()
             submit_button = Button(rt_window, text='Submit',
-                                   command=lambda: raytracing_apply(db_directory, path_dir_rt_cfg, path_dir_client_config_rt_json, path_dir_client_saved_sg_rt_json, root_window,
+                                   command=lambda: raytracing_apply(db_directory, path_dir_rt_cfg,
+                                                                    path_dir_client_config_rt_json,
+                                                                    path_dir_client_saved_sg_rt_json, root_window,
                                                                     values_set.get(), reflections_value.get(),
                                                                     rtgi_value.get(), rt_window),
                                    font=("Bahnschrift", 12))
@@ -349,7 +365,8 @@ def raytracing_settings(db_directory, path_dir_rt_cfg, path_dir_client_config_rt
         webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
 
 
-def raytracing_apply(db_directory, path_dir_rt_cfg, path_dir_client_config_rt_json, path_dir_client_saved_sg_rt_json, root_window, rt, rtref, rtgi, rt_window) -> None:
+def raytracing_apply(db_directory, path_dir_rt_cfg, path_dir_client_config_rt_json, path_dir_client_saved_sg_rt_json,
+                     root_window, rt, rtref, rtgi, rt_window) -> None:
     engine_config.read(path_dir_rt_cfg)
     try:
         rt_value = None
