@@ -4,7 +4,7 @@ import webbrowser
 import glob
 import os
 import json
-from tkinter import messagebox, simpledialog, Tk, StringVar, OptionMenu, Label, Checkbutton, Button
+from tkinter import messagebox, Tk, StringVar, OptionMenu, Label, Checkbutton, Button
 from tkinter.filedialog import askopenfilename
 from pathlib import Path
 
@@ -274,14 +274,10 @@ def fps_value(db_directory, path_dir_fs_cfg) -> None:
             messagebox.showerror("Error",
                                  "Your LocalStorage file is incomplete. Please run the game at least once and try again!")
         else:
-            messagebox.showerror("Error",
-                                 f"An error occurred. Please raise an issue or contact me on the GitHub Page with the following message: \n\n{e}")
-            webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
+            github_redirect_error(e)
 
     except Exception as e:
-        messagebox.showerror("Error",
-                             f"An error occurred. Please raise an issue or contact me on the GitHub Page with the following message: \n\n{e}")
-        webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
+        github_redirect_error(e)
 
 
 def raytracing_settings(db_directory, path_dir_rt_cfg, path_dir_client_config_rt_json, path_dir_client_saved_sg_rt_json,
@@ -356,13 +352,9 @@ def raytracing_settings(db_directory, path_dir_rt_cfg, path_dir_client_config_rt
             messagebox.showerror("Error",
                                  "Your LocalStorage file is incomplete. Please run the game at least once and try again!")
         else:
-            messagebox.showerror("Error",
-                                 f"An error occurred. Please raise an issue or contact me on the GitHub Page with the following message: \n\n{e}")
-            webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
+            github_redirect_error(e)
     except Exception as e:
-        messagebox.showerror("Error",
-                             f"An error occurred. Please raise an issue or contact me on the GitHub Page with the following message: \n\n{e}")
-        webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
+        github_redirect_error(e)
 
 
 def raytracing_apply(db_directory, path_dir_rt_cfg, path_dir_client_config_rt_json, path_dir_client_saved_sg_rt_json,
@@ -427,10 +419,11 @@ def raytracing_apply(db_directory, path_dir_rt_cfg, path_dir_client_config_rt_js
             messagebox.showerror("Error",
                                  "Your LocalStorage file is incomplete. Please run the game at least once and try again!")
         else:
-            messagebox.showerror("Error",
-                                 f"An error occurred. Please raise an issue or contact me on the GitHub Page with the following message: \n\n{e}")
-            webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
+            github_redirect_error(e)
     except Exception as e:
-        messagebox.showerror("Error",
+        github_redirect_error(e)
+
+def github_redirect_error(e):
+    messagebox.showerror("Error",
                              f"An error occurred. Please raise an issue or contact me on the GitHub Page with the following message: \n\n{e}")
-        webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
+    webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
