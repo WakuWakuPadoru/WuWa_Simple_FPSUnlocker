@@ -2,8 +2,8 @@
 
 ## Introduction
 
-### **As of 2.2, Unlocking FPS no longer works.**
-### **Enable Raytracing/RT on AMD/Older Nvidia GPUs**
+### **Updated for 2.2! FPS Unlocking is now working in 2.2 even on Unsupported CPUs/GPUs** - 29th March 2025
+### **Enable 120 FPS Support AND/OR Raytracing/RT on AMD/Older Nvidia GPUs**
 
 This project is being **actively updated** and **maintained**. 
 
@@ -30,7 +30,7 @@ belong to their respective copyright holders and owners.**
 - Simple to use UI, no need for command prompts or CLI. Just run the program / exe and navigate the UI with buttons and
   mouse
   clicks!
-- Input your own desired FPS cap regardless of your Graphics Card / GPU. [25 - 120 FPS]
+- Unlock 120 FPS Support!
 - Manually enable Raytracing on GPUs older than the RTX 4000 series or AMD RX 6000 series and up, allows you to set the Raytracing quality, Raytraced Reflections, and Raytraced Global Illumination.
 - Program will notify you whenever there are updates available!
 - No additional installations or dependencies required (apart from Wuthering Waves). Just download and run the program!
@@ -75,7 +75,6 @@ You can find the latest release [here](https://github.com/WakuWakuPadoru/WuWa_Si
 ![Screenshot 0](https://i.imgur.com/6Kc06vY.png)
 ![Screenshot 0.5](https://i.imgur.com/nJrkgIi.png)
 ![Screenshot 1](https://i.imgur.com/evBWUrr.png)
-![Screenshot 2](https://i.imgur.com/vrokAwt.png)
 ![Screenshot 3](https://i.imgur.com/tGMRk8h.png)
 
 ## FAQ
