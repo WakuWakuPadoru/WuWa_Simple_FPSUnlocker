@@ -7,6 +7,7 @@ import json
 from tkinter import messagebox, simpledialog, Tk, StringVar, OptionMenu, Label, Checkbutton, Button
 from tkinter.filedialog import askopenfilename
 from pathlib import Path
+from sys import exit
 
 from checks.permissions import check_isvalid_process
 
@@ -26,10 +27,6 @@ def choose_directory(action, root_window) -> None:
         directory = askopenfilename(initialdir=game_dir,
                                     title="Select where \"Wuthering Waves.exe\" is located.",
                                     filetypes=[("exe files", "Wuthering Waves.exe")])
-        if "Program Files" in directory:
-            messagebox.showerror("Admin Rights",
-                                 "As your game is installed in Program Files, please run this program as an Administrator.")
-            exit()
         if directory is not None and directory != "":
             path_dir_exe = Path(directory).parent.joinpath("Wuthering Waves.exe")
             path_dir_ext = Path(directory).parent.joinpath("Client", "Saved", "LocalStorage")
@@ -278,6 +275,12 @@ def fps_value(db_directory, path_dir_fs_cfg) -> None:
                                  f"An error occurred. Please raise an issue or contact me on the GitHub Page with the following message: \n\n{e}")
             webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
 
+    except sqlite3.OperationalError as e:
+        if "attempt to write a readonly database" in str(e) and "Program Files" in str(db_directory):
+            messagebox.showerror("Access Error",
+                                 "As the game is installed in the Program Files directory, you may need to run this program with Admin Rights.")
+            exit()
+
     except Exception as e:
         messagebox.showerror("Error",
                              f"An error occurred. Please raise an issue or contact me on the GitHub Page with the following message: \n\n{e}")
@@ -355,6 +358,13 @@ def raytracing_settings(db_directory, path_dir_rt_cfg, path_dir_client_config_rt
         if str(e) == "'NoneType' object is not subscriptable":
             messagebox.showerror("Error",
                                  "Your LocalStorage file is incomplete. Please run the game at least once and try again!")
+
+    except sqlite3.OperationalError as e:
+        if "attempt to write a readonly database" in str(e) and "Program Files" in str(db_directory):
+            messagebox.showerror("Access Error",
+                                 "As the game is installed in the Program Files directory, you may need to run this program with Admin Rights.")
+            exit()
+
         else:
             messagebox.showerror("Error",
                                  f"An error occurred. Please raise an issue or contact me on the GitHub Page with the following message: \n\n{e}")
@@ -426,6 +436,13 @@ def raytracing_apply(db_directory, path_dir_rt_cfg, path_dir_client_config_rt_js
         if str(e) == "'NoneType' object is not subscriptable":
             messagebox.showerror("Error",
                                  "Your LocalStorage file is incomplete. Please run the game at least once and try again!")
+
+    except sqlite3.OperationalError as e:
+        if "attempt to write a readonly database" in str(e) and "Program Files" in str(db_directory):
+            messagebox.showerror("Access Error",
+                                 "As the game is installed in the Program Files directory, you may need to run this program with Admin Rights.")
+            exit()
+
         else:
             messagebox.showerror("Error",
                                  f"An error occurred. Please raise an issue or contact me on the GitHub Page with the following message: \n\n{e}")
