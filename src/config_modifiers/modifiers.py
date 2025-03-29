@@ -26,6 +26,8 @@ def choose_directory(action, root_window) -> None:
                                                               "GameUserSettings.ini")
             path_dir_rt_cfg = Path(directory).parent.joinpath("Client", "Saved", "Config", "WindowsNoEditor",
                                                               "Engine.ini")
+            path_dir_client_config_rt_json = Path(directory).parent.joinpath("Client", "Config", "RTX.json")
+            path_dir_client_saved_sg_rt_json = Path(directory).parent.joinpath("Client", "Saved", "SaveGames", "RTX.json")
             if path_dir_ext.is_dir() and path_dir_exe.is_file():
                 matching_files = sorted(glob.glob(str(path_dir_ext) + "/LocalStorage*.db"))
                 matching_files_oos = "\n".join(matching_files)
@@ -51,7 +53,7 @@ def choose_directory(action, root_window) -> None:
                     if action == "unlockFPS":
                         fps_value(path_dir_ext, path_dir_fs_cfg)
                     elif action == "raytracing":
-                        raytracing_settings(path_dir_ext, path_dir_rt_cfg, root_window)
+                        raytracing_settings(path_dir_ext, path_dir_rt_cfg, path_dir_client_config_rt_json, path_dir_client_saved_sg_rt_json, root_window)
             else:
                 messagebox.showerror("Error",
                                      "LocalStorage file not found. Please run the game at least once and try again!")
@@ -269,7 +271,7 @@ def fps_value(db_directory, path_dir_fs_cfg) -> None:
         webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
 
 
-def raytracing_settings(db_directory, path_dir_rt_cfg, root_window) -> None:
+def raytracing_settings(db_directory, path_dir_rt_cfg, path_dir_client_config_rt_json, path_dir_client_saved_sg_rt_json, root_window) -> None:
     try:
         engine_config.read(path_dir_rt_cfg)
         if engine_config.has_section("/Script/Engine.RendererRTXSettings") is False:
@@ -301,7 +303,7 @@ def raytracing_settings(db_directory, path_dir_rt_cfg, root_window) -> None:
                                font=("Bahnschrift", 12))
             rtgi.pack()
             submit_button = Button(rt_window, text='Submit',
-                                   command=lambda: raytracing_apply(db_directory, path_dir_rt_cfg, root_window,
+                                   command=lambda: raytracing_apply(db_directory, path_dir_rt_cfg, path_dir_client_config_rt_json, path_dir_client_saved_sg_rt_json, root_window,
                                                                     values_set.get(), reflections_value.get(),
                                                                     rtgi_value.get(), rt_window),
                                    font=("Bahnschrift", 12))
@@ -328,6 +330,10 @@ def raytracing_settings(db_directory, path_dir_rt_cfg, root_window) -> None:
             engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing.EnableInEditor", str(0))
             with open(path_dir_rt_cfg, "w") as configfile:
                 engine_config.write(configfile)
+            rtDisable = {"bRayTracingEnable": 0}
+            for path in [path_dir_client_config_rt_json, path_dir_client_saved_sg_rt_json]:
+                with open(path, 'w') as rtxjson:
+                    json.dump(rtDisable, rtxjson)
             messagebox.showinfo("Success", "Raytracing disabled successfully!")
     except TypeError as e:
         if str(e) == "'NoneType' object is not subscriptable":
@@ -343,7 +349,7 @@ def raytracing_settings(db_directory, path_dir_rt_cfg, root_window) -> None:
         webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
 
 
-def raytracing_apply(db_directory, path_dir_rt_cfg, root_window, rt, rtref, rtgi, rt_window) -> None:
+def raytracing_apply(db_directory, path_dir_rt_cfg, path_dir_client_config_rt_json, path_dir_client_saved_sg_rt_json, root_window, rt, rtref, rtgi, rt_window) -> None:
     engine_config.read(path_dir_rt_cfg)
     try:
         rt_value = None
@@ -390,6 +396,10 @@ def raytracing_apply(db_directory, path_dir_rt_cfg, root_window, rt, rtref, rtgi
         engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing.EnableInEditor", str(1))
         with open(path_dir_rt_cfg, "w") as configfile:
             engine_config.write(configfile)
+        rtEnable = {"bRayTracingEnable": 1}
+        for path in [path_dir_client_config_rt_json, path_dir_client_saved_sg_rt_json]:
+            with open(path, 'w') as rtxjson:
+                json.dump(rtEnable, rtxjson)
         root_window.destroy()
         messagebox.showinfo("Success",
                             "Raytracing settings applied successfully!\n\nRestart the game once or twice for the settings to take effect.")
