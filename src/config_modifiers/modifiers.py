@@ -18,7 +18,7 @@ def choose_directory(action, root_window) -> None:
     if check_isvalid_process() is True:
         game_dir = None
         original_dir = "C:/Wuthering Waves/Wuthering Waves Game/"
-        new_dir = "C:/Program Files/Wuthering Waves"
+        new_dir = "C:/Program Files/Wuthering Waves/Wuthering Waves Game/"
         if os.path.exists(original_dir) is True:
             game_dir = original_dir
         elif os.path.exists(new_dir) is True:
