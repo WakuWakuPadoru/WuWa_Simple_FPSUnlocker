@@ -324,22 +324,33 @@ def raytracing_settings(db_directory, path_dir_rt_cfg, path_dir_client_config_rt
             db = sqlite3.connect(
                 Path(db_directory).joinpath("LocalStorage.db"))
             cursor = db.cursor()
-            cursor.execute(
-                "INSERT INTO LocalStorage (Key, Value) VALUES ('RayTracing', ?) ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
-                (0,))
-            cursor.execute(
-                "INSERT INTO LocalStorage (Key, Value) VALUES ('RayTracedReflection', ?) ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
-                (0,))
-            cursor.execute(
-                "INSERT INTO LocalStorage (Key, Value) VALUES ('RayTracedGI', ?) ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
-                (0,))
+            # cursor.execute(
+            #     "INSERT INTO LocalStorage (Key, Value) VALUES ('RayTracing', ?) ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
+            #     (0,))
+            # cursor.execute(
+            #     "INSERT INTO LocalStorage (Key, Value) VALUES ('RayTracedReflection', ?) ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
+            #     (0,))
+            # cursor.execute(
+            #     "INSERT INTO LocalStorage (Key, Value) VALUES ('RayTracedGI', ?) ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
+            #     (0,))
+            db_settings = ["RayTracing", "RayTracedReflection", "RayTracedGI"]
+            for key in db_settings:
+                cursor.execute(
+                    "INSERT INTO LocalStorage (Key, Value) VALUES (?, ?) "
+                    "ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
+                    (key, 0),
+                )
             db.commit()
             db.close()
-            engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing", str(0))
-            engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing.LimitDevice", str(1))
-            engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing.EnableInGame", str(0))
-            engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing.EnableOnDemand", str(0))
-            engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing.EnableInEditor", str(0))
+            ray_tracing_settings = {
+                "r.RayTracing": 0,
+                "r.RayTracing.LimitDevice": 1,
+                "r.RayTracing.EnableInGame": 0,
+                "r.RayTracing.EnableOnDemand": 0,
+                "r.RayTracing.EnableInEditor": 0,
+            }
+            for key, value in ray_tracing_settings.items():
+                engine_config.set("/Script/Engine.RendererRTXSettings", key, str(value))
             with open(path_dir_rt_cfg, "w") as configfile:
                 engine_config.write(configfile)
             rtDisable = {"bRayTracingEnable": 0}
@@ -364,12 +375,13 @@ def raytracing_apply(db_directory, path_dir_rt_cfg, path_dir_client_config_rt_js
         rt_value = None
         rtref_value = None
         rtgi_value = None
-        if rt == "Low":
-            rt_value = 1
-        elif rt == "Medium":
-            rt_value = 2
-        elif rt == "High":
-            rt_value = 3
+        match rt:
+            case "Low":
+                rt_value = 1
+            case "Medium":
+                rt_value = 2
+            case "High":
+                rt_value = 3
         if rtref == "1":
             rtref_value = 1
         else:
@@ -381,28 +393,30 @@ def raytracing_apply(db_directory, path_dir_rt_cfg, path_dir_client_config_rt_js
         db = sqlite3.connect(
             Path(db_directory).joinpath("LocalStorage.db"))
         cursor = db.cursor()
-        cursor.execute(
-            "INSERT INTO LocalStorage (Key, Value) VALUES ('RayTracing', ?) ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
-            (rt_value,))
-        cursor.execute(
-            "INSERT INTO LocalStorage (Key, Value) VALUES ('RayTracedReflection', ?) ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
-            (rtref_value,))
-        cursor.execute(
-            "INSERT INTO LocalStorage (Key, Value) VALUES ('RayTracedGI', ?) ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
-            (rtgi_value,))
-        cursor.execute(
-            "INSERT INTO LocalStorage (Key, Value) VALUES ('XessEnable', ?) ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
-            (0,))
-        cursor.execute(
-            "INSERT INTO LocalStorage (Key, Value) VALUES ('XessQuality', ?) ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
-            (0,))
+        db_settings = {
+            "RayTracing": rt_value,
+            "RayTracedReflection": rtref_value,
+            "RayTracedGI": rtgi_value,
+            "XessEnable": 0,
+            "XessQuality": 0,
+        }
+        for key, value in db_settings.items():
+            cursor.execute(
+                "INSERT INTO LocalStorage (Key, Value) VALUES (?, ?) "
+                "ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
+                (key, value),
+            )
         db.commit()
         db.close()
-        engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing", str(1))
-        engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing.LimitDevice", str(0))
-        engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing.EnableInGame", str(1))
-        engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing.EnableOnDemand", str(1))
-        engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing.EnableInEditor", str(1))
+        ray_tracing_settings = {
+            "r.RayTracing": 1,
+            "r.RayTracing.LimitDevice": 0,
+            "r.RayTracing.EnableInGame": 1,
+            "r.RayTracing.EnableOnDemand": 1,
+            "r.RayTracing.EnableInEditor": 1,
+        }
+        for key, value in ray_tracing_settings.items():
+            engine_config.set("/Script/Engine.RendererRTXSettings", key, str(value))
         with open(path_dir_rt_cfg, "w") as configfile:
             engine_config.write(configfile)
         rtEnable = {"bRayTracingEnable": 1}
