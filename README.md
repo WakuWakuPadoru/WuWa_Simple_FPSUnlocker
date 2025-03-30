@@ -4,6 +4,7 @@
 
 ### **Updated for 2.2! FPS Unlocking is now working in 2.2 even on Unsupported CPUs/GPUs** - 29th March 2025
 ### **Enable 120 FPS Support AND/OR Raytracing/RT on AMD/Older Nvidia GPUs**
+### **<ins>For AMD GPU Users, Please read the FAQ Below!</ins>**
 
 This project is being **actively updated** and **maintained**. 
 
@@ -78,6 +79,15 @@ You can find the latest release [here](https://github.com/WakuWakuPadoru/WuWa_Si
 ![Screenshot 3](https://i.imgur.com/tGMRk8h.png)
 
 ## FAQ
+### I use an older AMD GPU (Older than 9000 Series), but Raytracing either stutters or crashes at Shader Compilation.
+Please download [24.12.1](https://www.amd.com/en/resources/support-articles/release-notes/RN-RAD-WIN-24-12-1.html) from AMD.
+### I use an AMD RDNA 4 GPU (9000 Series), but Raytracing either stutters or crashes at Shader Compilation.
+There is currently no older version of AMD's drivers that can be installed that doesn't have this issue, this is an AMD issue, not a Kuro issue. [Please report this to AMD](https://www.amd.com/en/resources/support-articles/faqs/AMDBRT.html) as this issue didn't happen in 24.X.
+However, you **may** still brute force it if you want to, but you may encounter **Performance Issues**. <ins>**PLEASE DON'T DO THIS IF YOU HAVE AN AMD 6000-7000 SERIES! Read the first FAQ above**.</ins>
+1) Use the Unlocker as per normal, apply RT, and restart the game up to 2 times to trigger the Shader Compilation.
+2) The game **will** crash at around 70%, but don't click "ok" and let the game continue.
+3) The game **will** automatically exit after around a minute; restart it and repeat the process until the shaders eventually compile.
+Eventually, you will be able to play the game with RT Enabled once you get pass the Shader Compilation process but performance will likely be unstable.
 ### Didn't Kuro Games already officially allow 120 FPS?
 Yes, but they only officially allow certain specific hardware to use this officially. Even if your PC is perfectly powerful enough to run it, if it's not on the White List, you can't run the game, particularly on AMD Ryzen PCs.
 ### Even though I don't have an RTX 4000 series and newer, can I enable Raytracing?
