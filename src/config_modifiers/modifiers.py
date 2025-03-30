@@ -324,15 +324,6 @@ def raytracing_settings(db_directory, path_dir_rt_cfg, path_dir_client_config_rt
             db = sqlite3.connect(
                 Path(db_directory).joinpath("LocalStorage.db"))
             cursor = db.cursor()
-            # cursor.execute(
-            #     "INSERT INTO LocalStorage (Key, Value) VALUES ('RayTracing', ?) ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
-            #     (0,))
-            # cursor.execute(
-            #     "INSERT INTO LocalStorage (Key, Value) VALUES ('RayTracedReflection', ?) ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
-            #     (0,))
-            # cursor.execute(
-            #     "INSERT INTO LocalStorage (Key, Value) VALUES ('RayTracedGI', ?) ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
-            #     (0,))
             db_settings = ["RayTracing", "RayTracedReflection", "RayTracedGI"]
             for key in db_settings:
                 cursor.execute(
