@@ -75,35 +75,6 @@ def choose_directory(action, root_window) -> None:
         case "raytracing":
             raytracing_settings(path_dir_ext, path_dir_rt_cfg, path_dir_client_config_rt_json,
                             path_dir_client_saved_sg_rt_json, root_window)
-    # if action == "unlockFPS":
-    #     fps_value(path_dir_ext, path_dir_fs_cfg)
-    # elif action == "raytracing":
-    #     raytracing_settings(path_dir_ext, path_dir_rt_cfg, path_dir_client_config_rt_json,
-    #                         path_dir_client_saved_sg_rt_json, root_window)
-    # if len(matching_files) > 1:
-    #     messagebox.showerror("Error",
-    #                             "Multiple LocalStorage files found. This may cause compatibility issues with the FPS Unlocker."
-    #                             f"\n\n{matching_files_oos}"
-    #                             "\n\nThis is usually caused by game crashes or corruption with the original file. Please do the following before continuing:"
-    #                             "\n\n1) Click on OK to open the folder where the LocalStorage files are located. "
-    #                             "\n2) Make sure that the game and launcher isn't running and delete all files in the opened folder. (Your settings will be reset)."
-    #                             "\n3) Run the game at least once and close it to generate a new LocalStorage file."
-    #                             "\n4) Run this program again and it should work as intended.")
-
-    #     os.startfile(path_dir_ext)
-    #     return
-    # elif len(matching_files) == 0:
-    #     messagebox.showerror("Error",
-    #                             "LocalStorage file not found. Please run the game at least once and try again!")
-
-    # else:
-    #     messagebox.showinfo("Success", "File selected successfully!")
-    #     # manage_fullscreen(path_dir_ext, path_dir_fs_cfg) # No longer possible due to Kuro games.
-    #     if action == "unlockFPS":
-    #         fps_value(path_dir_ext, path_dir_fs_cfg)
-    #     elif action == "raytracing":
-    #         raytracing_settings(path_dir_ext, path_dir_rt_cfg, path_dir_client_config_rt_json,
-    #                             path_dir_client_saved_sg_rt_json, root_window)
 
 
 # def manage_fullscreen(db_directory, path_dir_fs_cfg) -> None:
