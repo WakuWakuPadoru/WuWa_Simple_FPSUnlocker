@@ -7,6 +7,7 @@ import json
 from tkinter import messagebox, Tk, StringVar, OptionMenu, Label, Checkbutton, Button
 from tkinter.filedialog import askopenfilename
 from pathlib import Path
+from sys import exit
 
 from checks.permissions import admin_check, check_isvalid_process
 
@@ -175,8 +176,6 @@ def choose_directory(action, root_window) -> None:
 
 def fps_value(db_directory, path_dir_fs_cfg) -> None:
     try:
-        # fps = simpledialog.askinteger(title="", prompt="Choose your desired FPS Value:\t\t\t", initialvalue=90,
-        #                               minvalue=25, maxvalue=120)
         messagebox.showinfo("INFORMATION", "Due to the 2.2 Update, the FPS Unlocker is now set to 120 FPS.")
         fps = 120
         db = sqlite3.connect(
@@ -342,6 +341,24 @@ def raytracing_settings(db_directory, path_dir_rt_cfg, path_dir_client_config_rt
             }
             for key, value in ray_tracing_settings.items():
                 engine_config.set("/Script/Engine.RendererRTXSettings", key, str(value))
+            ray_tracing_preset_keys = { # keys to remove after disabling rt
+                "r.Lumen.ScreenProbeGather.DownsampleFactor",
+                "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution",
+                "r.Lumen.ScreenProbeGather.RadianceCache.NumProbesToTraceBudget",
+                "r.Lumen.ScreenProbeGather.TracingOctahedronResolution",
+                "r.Lumen.ScreenProbeGather.ScreenTraces.HZBTraversal.FullResDepth",
+                "r.Lumen.ScreenProbeGather.Temporal.DistanceThreshold",
+                "r.Lumen.ScreenProbeGather.Temporal.MaxFramesAccumulated",
+                "r.Lumen.Reflections.DownsampleFactor",
+                "r.RayTracing.Shadows.MinScissorPercent",
+                "r.Shadow.Denoiser.MinScissorPercent",
+                "r.RayTracing.Shadows.MaxNumNoScissorCullLights",
+                "r.Lumen.DiffuseIndirect.Allow",
+                "r.Lumen.Reflections.Allow"
+            }
+            for key in ray_tracing_preset_keys:
+                if engine_config.has_option("/Script/Engine.RendererRTXSettings", key):
+                    engine_config.remove_option("/Script/Engine.RendererRTXSettings", key)
             with open(path_dir_rt_cfg, "w") as configfile:
                 engine_config.write(configfile)
             rtDisable = {"bRayTracingEnable": 0}
@@ -364,30 +381,60 @@ def raytracing_apply(db_directory, path_dir_rt_cfg, path_dir_client_config_rt_js
     engine_config.read(path_dir_rt_cfg)
     try:
         rt_value = None
-        rtref_value = None
-        rtgi_value = None
+        rt_preset = None
         match rt:
             case "Low":
                 rt_value = 1
+                rt_preset = { # low settings
+                    "r.Lumen.ScreenProbeGather.DownsampleFactor": 64,
+                    "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": 16,
+                    "r.Lumen.ScreenProbeGather.RadianceCache.NumProbesToTraceBudget": 180,
+                    "r.Lumen.ScreenProbeGather.TracingOctahedronResolution": 4,
+                    "r.Lumen.ScreenProbeGather.ScreenTraces.HZBTraversal.FullResDepth": 0,
+                    "r.Lumen.ScreenProbeGather.Temporal.DistanceThreshold": 0.05,
+                    "r.Lumen.ScreenProbeGather.Temporal.MaxFramesAccumulated": 30,
+                    "r.Lumen.Reflections.DownsampleFactor": 2,
+                    "r.RayTracing.Shadows.MinScissorPercent": 0.6,
+                    "r.Shadow.Denoiser.MinScissorPercent": 0.3,
+                    "r.RayTracing.Shadows.MaxNumNoScissorCullLights": 3
+                }
             case "Medium":
                 rt_value = 2
+                rt_preset = { # medium settings
+                    "r.Lumen.ScreenProbeGather.DownsampleFactor": 32,
+                    "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": 32,
+                    "r.Lumen.ScreenProbeGather.RadianceCache.NumProbesToTraceBudget": 240,
+                    "r.Lumen.ScreenProbeGather.TracingOctahedronResolution": 6,
+                    "r.Lumen.ScreenProbeGather.ScreenTraces.HZBTraversal.FullResDepth": 1,
+                    "r.Lumen.ScreenProbeGather.Temporal.DistanceThreshold": 0.03,
+                    "r.Lumen.ScreenProbeGather.Temporal.MaxFramesAccumulated": 10,
+                    "r.Lumen.Reflections.DownsampleFactor": 1,
+                    "r.RayTracing.Shadows.MinScissorPercent": 0.4,
+                    "r.Shadow.Denoiser.MinScissorPercent": 0.2,
+                    "r.RayTracing.Shadows.MaxNumNoScissorCullLights": 5
+                }
             case "High":
                 rt_value = 3
-        if rtref == "1":
-            rtref_value = 1
-        else:
-            rtref_value = 0
-        if rtgi == "1":
-            rtgi_value = 1
-        else:
-            rtgi_value = 0
+                rt_preset = { # high settings (yes I could probably avoid code duplication but right now I dont care)
+                    "r.Lumen.ScreenProbeGather.DownsampleFactor": 16,
+                    "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": 32,
+                    "r.Lumen.ScreenProbeGather.RadianceCache.NumProbesToTraceBudget": 300,
+                    "r.Lumen.ScreenProbeGather.TracingOctahedronResolution": 8,
+                    "r.Lumen.ScreenProbeGather.ScreenTraces.HZBTraversal.FullResDepth": 1,
+                    "r.Lumen.ScreenProbeGather.Temporal.DistanceThreshold": 0.005,
+                    "r.Lumen.ScreenProbeGather.Temporal.MaxFramesAccumulated": 10,
+                    "r.Lumen.Reflections.DownsampleFactor": 1,
+                    "r.RayTracing.Shadows.MinScissorPercent": 0,
+                    "r.Shadow.Denoiser.MinScissorPercent": 0
+                }
+        rt_preset.update({'r.Lumen.DiffuseIndirect.Allow': int(rtgi), 'r.Lumen.Reflections.Allow': int(rtref)})
         db = sqlite3.connect(
             Path(db_directory).joinpath("LocalStorage.db"))
         cursor = db.cursor()
         db_settings = {
             "RayTracing": rt_value,
-            "RayTracedReflection": rtref_value,
-            "RayTracedGI": rtgi_value,
+            "RayTracedReflection": int(rtref),
+            "RayTracedGI": int(rtgi),
             "XessEnable": 0,
             "XessQuality": 0,
         }
@@ -406,6 +453,7 @@ def raytracing_apply(db_directory, path_dir_rt_cfg, path_dir_client_config_rt_js
             "r.RayTracing.EnableOnDemand": 1,
             "r.RayTracing.EnableInEditor": 1,
         }
+        ray_tracing_settings.update(rt_preset)
         for key, value in ray_tracing_settings.items():
             engine_config.set("/Script/Engine.RendererRTXSettings", key, str(value))
         with open(path_dir_rt_cfg, "w") as configfile:
