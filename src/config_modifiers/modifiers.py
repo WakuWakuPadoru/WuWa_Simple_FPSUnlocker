@@ -381,52 +381,33 @@ def raytracing_apply(db_directory, path_dir_rt_cfg, path_dir_client_config_rt_js
     engine_config.read(path_dir_rt_cfg)
     try:
         rt_value = None
-        rt_preset = None
+        rt_preset = {}
+        rt_preset_values = []
+        rt_preset_keys = [ # all rt settings (order is important when filling in values!)
+            "r.Lumen.ScreenProbeGather.DownsampleFactor",
+            "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution",
+            "r.Lumen.ScreenProbeGather.RadianceCache.NumProbesToTraceBudget",
+            "r.Lumen.ScreenProbeGather.TracingOctahedronResolution",
+            "r.Lumen.ScreenProbeGather.ScreenTraces.HZBTraversal.FullResDepth",
+            "r.Lumen.ScreenProbeGather.Temporal.DistanceThreshold",
+            "r.Lumen.ScreenProbeGather.Temporal.MaxFramesAccumulated",
+            "r.Lumen.Reflections.DownsampleFactor",
+            "r.RayTracing.Shadows.MinScissorPercent",
+            "r.Shadow.Denoiser.MinScissorPercent",
+            "r.RayTracing.Shadows.MaxNumNoScissorCullLights"
+        ]
         match rt:
             case "Low":
                 rt_value = 1
-                rt_preset = { # low settings
-                    "r.Lumen.ScreenProbeGather.DownsampleFactor": 64,
-                    "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": 16,
-                    "r.Lumen.ScreenProbeGather.RadianceCache.NumProbesToTraceBudget": 180,
-                    "r.Lumen.ScreenProbeGather.TracingOctahedronResolution": 4,
-                    "r.Lumen.ScreenProbeGather.ScreenTraces.HZBTraversal.FullResDepth": 0,
-                    "r.Lumen.ScreenProbeGather.Temporal.DistanceThreshold": 0.05,
-                    "r.Lumen.ScreenProbeGather.Temporal.MaxFramesAccumulated": 30,
-                    "r.Lumen.Reflections.DownsampleFactor": 2,
-                    "r.RayTracing.Shadows.MinScissorPercent": 0.6,
-                    "r.Shadow.Denoiser.MinScissorPercent": 0.3,
-                    "r.RayTracing.Shadows.MaxNumNoScissorCullLights": 3
-                }
+                rt_preset_values = [64, 16, 180, 4, 0, 0.05, 30, 2, 0.6, 0.3, 3]  # low settings
             case "Medium":
                 rt_value = 2
-                rt_preset = { # medium settings
-                    "r.Lumen.ScreenProbeGather.DownsampleFactor": 32,
-                    "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": 32,
-                    "r.Lumen.ScreenProbeGather.RadianceCache.NumProbesToTraceBudget": 240,
-                    "r.Lumen.ScreenProbeGather.TracingOctahedronResolution": 6,
-                    "r.Lumen.ScreenProbeGather.ScreenTraces.HZBTraversal.FullResDepth": 1,
-                    "r.Lumen.ScreenProbeGather.Temporal.DistanceThreshold": 0.03,
-                    "r.Lumen.ScreenProbeGather.Temporal.MaxFramesAccumulated": 10,
-                    "r.Lumen.Reflections.DownsampleFactor": 1,
-                    "r.RayTracing.Shadows.MinScissorPercent": 0.4,
-                    "r.Shadow.Denoiser.MinScissorPercent": 0.2,
-                    "r.RayTracing.Shadows.MaxNumNoScissorCullLights": 5
-                }
+                rt_preset_values = [32, 32, 240, 6, 1, 0.03, 10, 1, 0.4, 0.2, 5]  # medium settings
             case "High":
                 rt_value = 3
-                rt_preset = { # high settings (the only preset not including MaxNumNoScissorCullLights)
-                    "r.Lumen.ScreenProbeGather.DownsampleFactor": 16,
-                    "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": 32,
-                    "r.Lumen.ScreenProbeGather.RadianceCache.NumProbesToTraceBudget": 300,
-                    "r.Lumen.ScreenProbeGather.TracingOctahedronResolution": 8,
-                    "r.Lumen.ScreenProbeGather.ScreenTraces.HZBTraversal.FullResDepth": 1,
-                    "r.Lumen.ScreenProbeGather.Temporal.DistanceThreshold": 0.005,
-                    "r.Lumen.ScreenProbeGather.Temporal.MaxFramesAccumulated": 10,
-                    "r.Lumen.Reflections.DownsampleFactor": 1,
-                    "r.RayTracing.Shadows.MinScissorPercent": 0,
-                    "r.Shadow.Denoiser.MinScissorPercent": 0
-                }
+                rt_preset_values = [16, 32, 300, 8, 1, 0.005, 10, 1, 0, 0]  # high settings (the only preset not including MaxNumNoScissorCullLights)
+                rt_preset_keys.remove("r.RayTracing.Shadows.MaxNumNoScissorCullLights")
+        rt_preset.update({key: value for key, value in zip(rt_preset_keys, rt_preset_values)})
         rt_preset.update({'r.Lumen.DiffuseIndirect.Allow': int(rtgi), 'r.Lumen.Reflections.Allow': int(rtref)})
         db = sqlite3.connect(
             Path(db_directory).joinpath("LocalStorage.db"))
