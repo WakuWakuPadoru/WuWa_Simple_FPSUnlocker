@@ -415,7 +415,7 @@ def raytracing_apply(db_directory, path_dir_rt_cfg, path_dir_client_config_rt_js
                 }
             case "High":
                 rt_value = 3
-                rt_preset = { # high settings (yes I could probably avoid code duplication but right now I dont care)
+                rt_preset = { # high settings (the only preset not including MaxNumNoScissorCullLights)
                     "r.Lumen.ScreenProbeGather.DownsampleFactor": 16,
                     "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": 32,
                     "r.Lumen.ScreenProbeGather.RadianceCache.NumProbesToTraceBudget": 300,
@@ -446,6 +446,8 @@ def raytracing_apply(db_directory, path_dir_rt_cfg, path_dir_client_config_rt_js
             )
         db.commit()
         db.close()
+        if engine_config.has_option("/Script/Engine.RendererRTXSettings", "r.RayTracing.Shadows.MaxNumNoScissorCullLights"): # kind of annoying to have this here but required if changing from medium or low to high
+            engine_config.remove_option("/Script/Engine.RendererRTXSettings", "r.RayTracing.Shadows.MaxNumNoScissorCullLights")
         ray_tracing_settings = {
             "r.RayTracing": 1,
             "r.RayTracing.LimitDevice": 0,
