@@ -18,13 +18,12 @@ engine_config = configparser.ConfigParser(strict=False)
 def choose_directory(action, root_window) -> None:
     if not check_isvalid_process():
         return
-    game_dir = None
-    original_dir = "C:/Wuthering Waves/Wuthering Waves Game/"
-    new_dir = "C:/Program Files/Wuthering Waves/Wuthering Waves Game/"
-    if os.path.exists(original_dir):
-        game_dir = original_dir
-    elif os.path.exists(new_dir):
-        game_dir = new_dir
+    possible_game_dirs = [
+        "C:/Wuthering Waves/Wuthering Waves Game/",
+        "C:/Program Files/Wuthering Waves/Wuthering Waves Game/",
+        "D:/Wuthering Waves/Wuthering Waves Game/"
+    ]
+    game_dir = next((dir for dir in possible_game_dirs if os.path.exists(dir)), None)
     directory = askopenfilename(initialdir=game_dir,
                                 title="Select where \"Wuthering Waves.exe\" is located.",
                                 filetypes=[("exe files", "Wuthering Waves.exe")])
@@ -33,8 +32,6 @@ def choose_directory(action, root_window) -> None:
         messagebox.showerror("Admin Rights",
                                 "As your game is installed in Program Files, please run this program as an Administrator.")
         exit()
-    if directory is None and directory == "":
-        return
     path_dir_exe = Path(directory).parent.joinpath("Wuthering Waves.exe")
     path_dir_ext = Path(directory).parent.joinpath("Client", "Saved", "LocalStorage")
     path_dir_fs_cfg = Path(directory).parent.joinpath("Client", "Saved", "Config", "WindowsNoEditor",
