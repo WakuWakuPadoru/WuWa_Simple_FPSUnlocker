@@ -17,11 +17,13 @@ def main() -> int:
                                         "This program might require Admin Rights to function properly depending on where the game is installed (E.g. Program Files). "
                                         "\nWould you like to restart the program with Admin Rights?"
                                         "\n\nIn most cases, this is not required.")
-        if ask_admin is True:
-            # ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None,
-            #                                     1)  # IDE
-            ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv[1:]),
-                                                None, 1)  # EXE
+        if ask_admin:
+            if getattr(sys, 'frozen', False):
+                ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv[1:]),
+                                                    None, 1)  # EXE
+            else:
+                ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None,
+                                                    1)  # IDE
             sys.exit()
         else:
             pass

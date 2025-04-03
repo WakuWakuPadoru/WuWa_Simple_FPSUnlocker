@@ -46,7 +46,6 @@ def choose_directory(action, root_window) -> None:
                                 "LocalStorage file not found. Please run the game at least once and try again!")
         return
     matching_files = sorted(glob.glob(str(path_dir_ext) + "/LocalStorage*.db"))
-    matching_files_oos = "\n".join(matching_files)
     matching_files_length = len(matching_files)
     if matching_files_length != 1:
         match matching_files_length:
@@ -54,6 +53,7 @@ def choose_directory(action, root_window) -> None:
                 messagebox.showerror("Error",
                                     "LocalStorage file not found. Please run the game at least once and try again!")
             case _:
+                matching_files_oos = "\n".join(matching_files)
                 messagebox.showerror("Error",
                                     "Multiple LocalStorage files found. This may cause compatibility issues with the FPS Unlocker."
                                     f"\n\n{matching_files_oos}"
@@ -364,6 +364,8 @@ def raytracing_settings(db_directory, path_dir_rt_cfg, path_dir_client_config_rt
                 with open(path, 'w') as rtxjson:
                     json.dump(rtDisable, rtxjson)
             messagebox.showinfo("Success", "Raytracing disabled successfully!")
+            messagebox.showinfo("Info", "You can now close this program and enjoy the game!")
+            root_window.destroy()
     except TypeError as e:
         if str(e) == "'NoneType' object is not subscriptable":
             messagebox.showerror("Error",
