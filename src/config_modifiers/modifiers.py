@@ -4,71 +4,74 @@ import webbrowser
 import glob
 import os
 import json
-from tkinter import messagebox, simpledialog, Tk, StringVar, OptionMenu, Label, Checkbutton, Button
+from tkinter import messagebox, Tk, StringVar, OptionMenu, Label, Checkbutton, Button
 from tkinter.filedialog import askopenfilename
 from pathlib import Path
 from sys import exit
 
-from checks.permissions import check_isvalid_process
+from checks.permissions import admin_check, check_isvalid_process
 
 config = configparser.ConfigParser()
 engine_config = configparser.ConfigParser(strict=False)
 
 
 def choose_directory(action, root_window) -> None:
-    if check_isvalid_process() is True:
-        game_dir = None
-        original_dir = "C:/Wuthering Waves/Wuthering Waves Game/"
-        new_dir = "C:/Program Files/Wuthering Waves/Wuthering Waves Game/"
-        if os.path.exists(original_dir) is True:
-            game_dir = original_dir
-        elif os.path.exists(new_dir) is True:
-            game_dir = new_dir
-        directory = askopenfilename(initialdir=game_dir,
-                                    title="Select where \"Wuthering Waves.exe\" is located.",
-                                    filetypes=[("exe files", "Wuthering Waves.exe")])
-        if directory is not None and directory != "":
-            path_dir_exe = Path(directory).parent.joinpath("Wuthering Waves.exe")
-            path_dir_ext = Path(directory).parent.joinpath("Client", "Saved", "LocalStorage")
-            path_dir_fs_cfg = Path(directory).parent.joinpath("Client", "Saved", "Config", "WindowsNoEditor",
-                                                              "GameUserSettings.ini")
-            path_dir_rt_cfg = Path(directory).parent.joinpath("Client", "Saved", "Config", "WindowsNoEditor",
-                                                              "Engine.ini")
-            path_dir_client_config_rt_json = Path(directory).parent.joinpath("Client", "Config", "RTX.json")
-            path_dir_client_saved_sg_rt_json = Path(directory).parent.joinpath("Client", "Saved", "SaveGames",
-                                                                               "RTX.json")
-            if path_dir_ext.is_dir() and path_dir_exe.is_file():
-                matching_files = sorted(glob.glob(str(path_dir_ext) + "/LocalStorage*.db"))
-                matching_files_oos = "\n".join(matching_files)
-                if len(matching_files) > 1:
-                    messagebox.showerror("Error",
-                                         "Multiple LocalStorage files found. This may cause compatibility issues with the FPS Unlocker."
-                                         f"\n\n{matching_files_oos}"
-                                         "\n\nThis is usually caused by game crashes or corruption with the original file. Please do the following before continuing:"
-                                         "\n\n1) Click on OK to open the folder where the LocalStorage files are located. "
-                                         "\n2) Make sure that the game and launcher isn't running and delete all files in the opened folder. (Your settings will be reset)."
-                                         "\n3) Run the game at least once and close it to generate a new LocalStorage file."
-                                         "\n4) Run this program again and it should work as intended.")
-
-                    os.startfile(path_dir_ext)
-                    return
-                elif len(matching_files) == 0:
-                    messagebox.showerror("Error",
-                                         "LocalStorage file not found. Please run the game at least once and try again!")
-
-                else:
-                    messagebox.showinfo("Success", "File selected successfully!")
-                    # manage_fullscreen(path_dir_ext, path_dir_fs_cfg) # No longer possible due to Kuro games.
-                    if action == "unlockFPS":
-                        fps_value(path_dir_ext, path_dir_fs_cfg)
-                    elif action == "raytracing":
-                        raytracing_settings(path_dir_ext, path_dir_rt_cfg, path_dir_client_config_rt_json,
-                                            path_dir_client_saved_sg_rt_json, root_window)
-            else:
+    if not check_isvalid_process():
+        return
+    possible_game_dirs = [
+        "C:/Wuthering Waves/Wuthering Waves Game/",
+        "C:/Program Files/Wuthering Waves/Wuthering Waves Game/",
+        "D:/Wuthering Waves/Wuthering Waves Game/"
+    ]
+    game_dir = next((dir for dir in possible_game_dirs if os.path.exists(dir)), None)
+    directory = askopenfilename(initialdir=game_dir,
+                                title="Select where \"Wuthering Waves.exe\" is located.",
+                                filetypes=[("exe files", "Wuthering Waves.exe")])
+    userIsAdmin = admin_check()
+    if "Program Files" in directory and not userIsAdmin:
+        messagebox.showerror("Admin Rights",
+                                "As your game is installed in Program Files, please run this program as an Administrator.")
+        exit()
+    path_dir_exe = Path(directory).parent.joinpath("Wuthering Waves.exe")
+    path_dir_ext = Path(directory).parent.joinpath("Client", "Saved", "LocalStorage")
+    path_dir_fs_cfg = Path(directory).parent.joinpath("Client", "Saved", "Config", "WindowsNoEditor",
+                                                        "GameUserSettings.ini")
+    path_dir_rt_cfg = Path(directory).parent.joinpath("Client", "Saved", "Config", "WindowsNoEditor",
+                                                        "Engine.ini")
+    path_dir_client_config_rt_json = Path(directory).parent.joinpath("Client", "Config", "RTX.json")
+    path_dir_client_saved_sg_rt_json = Path(directory).parent.joinpath("Client", "Saved", "SaveGames",
+                                                                        "RTX.json")
+    if not path_dir_ext.is_dir() and not path_dir_exe.is_file():
+        messagebox.showerror("Error",
+                                "LocalStorage file not found. Please run the game at least once and try again!")
+        return
+    matching_files = sorted(glob.glob(str(path_dir_ext) + "/LocalStorage*.db"))
+    matching_files_length = len(matching_files)
+    if matching_files_length != 1:
+        match matching_files_length:
+            case 0:
                 messagebox.showerror("Error",
-                                     "LocalStorage file not found. Please run the game at least once and try again!")
-        else:
-            return
+                                    "LocalStorage file not found. Please run the game at least once and try again!")
+            case _:
+                matching_files_oos = "\n".join(matching_files)
+                messagebox.showerror("Error",
+                                    "Multiple LocalStorage files found. This may cause compatibility issues with the FPS Unlocker."
+                                    f"\n\n{matching_files_oos}"
+                                    "\n\nThis is usually caused by game crashes or corruption with the original file. Please do the following before continuing:"
+                                    "\n\n1) Click on OK to open the folder where the LocalStorage files are located. "
+                                    "\n2) Make sure that the game and launcher isn't running and delete all files in the opened folder. (Your settings will be reset)."
+                                    "\n3) Run the game at least once and close it to generate a new LocalStorage file."
+                                    "\n4) Run this program again and it should work as intended.")
+                os.startfile(path_dir_ext)
+                return
+    messagebox.showinfo("Success", "File selected successfully!")
+    # manage_fullscreen(path_dir_ext, path_dir_fs_cfg) # No longer possible due to Kuro games.
+    match action:
+        case "unlockFPS":
+            fps_value(path_dir_ext, path_dir_fs_cfg)
+        case "raytracing":
+            raytracing_settings(path_dir_ext, path_dir_rt_cfg, path_dir_client_config_rt_json,
+                            path_dir_client_saved_sg_rt_json, root_window)
 
 
 # def manage_fullscreen(db_directory, path_dir_fs_cfg) -> None:
@@ -171,109 +174,104 @@ def choose_directory(action, root_window) -> None:
 
 def fps_value(db_directory, path_dir_fs_cfg) -> None:
     try:
-        # fps = simpledialog.askinteger(title="", prompt="Choose your desired FPS Value:\t\t\t", initialvalue=90,
-        #                               minvalue=25, maxvalue=120)
         messagebox.showinfo("INFORMATION", "Due to the 2.2 Update, the FPS Unlocker is now set to 120 FPS.")
         fps = 120
-        if fps is not None:
-            db = sqlite3.connect(
-                Path(db_directory).joinpath("LocalStorage.db"))
-            cursor = db.cursor()
-            # Create data structures
-            menu_data_dict = {
-                "___MetaType___": "___Map___",
-                "Content": [
-                    [1, 100], [2, 100], [3, 100], [4, 100], [5, 0], [6, 0],
-                    [7, -0.4658685302734375], [10, 3], [11, 3], [20, 0], [21, 0],
-                    [22, 0], [23, 0], [24, 0], [25, 0], [26, 0], [27, 0], [28, 0],
-                    [29, 0], [30, 0], [31, 0], [32, 0], [33, 0], [34, 0], [35, 0],
-                    [36, 0], [37, 0], [38, 0], [39, 0], [40, 0], [41, 0], [42, 0],
-                    [43, 0], [44, 0], [45, 0], [46, 0], [47, 0], [48, 0], [49, 0],
-                    [50, 0], [51, 1], [52, 1], [53, 0], [54, 3], [55, 1], [56, 2],
-                    [57, 1], [58, 1], [59, 1], [61, 0], [62, 0], [63, 1], [64, 1],
-                    [65, 0], [66, 0], [67, 3], [68, 2], [69, 100], [70, 100], [79, 1],
-                    [81, 0], [82, 1], [83, 1], [84, 0], [85, 0], [87, 0], [88, 0],
-                    [89, 50], [90, 50], [91, 50], [92, 50], [93, 1], [99, 0], [100, 30],
-                    [101, 0], [102, 1], [103, 0], [104, 50], [105, 0], [106, 0.3],
-                    [107, 0], [112, 0], [113, 0], [114, 0], [115, 0], [116, 0],
-                    [117, 0], [118, 0], [119, 0], [120, 0], [121, 1], [122, 1],
-                    [123, 0], [130, 0], [131, 0], [132, 1], [135, 1], [133, 0]
-                ]
-            }
-
-            play_menu_info_dict = {
-                "1": 100, "2": 100, "3": 100, "4": 100, "5": 0, "6": 0,
-                "7": -0.4658685302734375, "10": 3, "11": 3, "20": 0, "21": 0,
-                "22": 0, "23": 0, "24": 0, "25": 0, "26": 0, "27": 0, "28": 0,
-                "29": 0, "30": 0, "31": 0, "32": 0, "33": 0, "34": 0, "35": 0,
-                "36": 0, "37": 0, "38": 0, "39": 0, "40": 0, "41": 0, "42": 0,
-                "43": 0, "44": 0, "45": 0, "46": 0, "47": 0, "48": 0, "49": 0,
-                "50": 0, "51": 1, "52": 1, "53": 0, "54": 3, "55": 1, "56": 2,
-                "57": 1, "58": 1, "59": 1, "61": 0, "62": 0, "63": 1, "64": 1,
-                "65": 0, "66": 0, "67": 3, "68": 2, "69": 100, "70": 100, "79": 1,
-                "81": 0, "82": 1, "83": 1, "84": 0, "85": 0, "87": 0, "88": 0,
-                "89": 50, "90": 50, "91": 50, "92": 50, "93": 1, "99": 0, "100": 30,
-                "101": 0, "102": 1, "103": 0, "104": 50, "105": 0, "106": 0.3,
-                "107": 0, "112": 0, "113": 0, "114": 0, "115": 0, "116": 0,
-                "117": 0, "118": 0, "119": 0, "120": 0, "121": 1, "122": 1,
-                "123": 0, "130": 0, "131": 0, "132": 1
-            }
-
-            # Remove the trigger if it exists
-            cursor.execute("DROP TRIGGER IF EXISTS prevent_custom_frame_rate_update")
-
-            # Create the trigger to prevent updates to the CustomFrameRate value
-            trigger_sql = f"""
-                CREATE TRIGGER prevent_custom_frame_rate_update
-                AFTER UPDATE OF value ON LocalStorage
-                WHEN NEW.key = 'CustomFrameRate'
-                BEGIN
-                    UPDATE LocalStorage
-                    SET value = {fps}
-                    WHERE key = 'CustomFrameRate';
-                END;
-            """
-            cursor.execute(trigger_sql)
-
-            # Finally, update the FPS value
-            cursor.execute(
-                "UPDATE LocalStorage SET value = ? WHERE key = 'CustomFrameRate'",
-                (fps,)
-            )
-
-            # Delete the old data if it exists for a clean state
-            cursor.execute(
-                "DELETE FROM LocalStorage WHERE key IN ('MenuData', 'PlayMenuInfo')"
-            )
-
-            # Prepare the new data for insertion
-            insert_records = [
-                ('MenuData', json.dumps(menu_data_dict)),
-                ('PlayMenuInfo', json.dumps(play_menu_info_dict))
+        db = sqlite3.connect(
+            Path(db_directory).joinpath("LocalStorage.db"))
+        cursor = db.cursor()
+        # Create data structures
+        menu_data_dict = {
+            "___MetaType___": "___Map___",
+            "Content": [
+                [1, 100], [2, 100], [3, 100], [4, 100], [5, 0], [6, 0],
+                [7, -0.4658685302734375], [10, 3], [11, 3], [20, 0], [21, 0],
+                [22, 0], [23, 0], [24, 0], [25, 0], [26, 0], [27, 0], [28, 0],
+                [29, 0], [30, 0], [31, 0], [32, 0], [33, 0], [34, 0], [35, 0],
+                [36, 0], [37, 0], [38, 0], [39, 0], [40, 0], [41, 0], [42, 0],
+                [43, 0], [44, 0], [45, 0], [46, 0], [47, 0], [48, 0], [49, 0],
+                [50, 0], [51, 1], [52, 1], [53, 0], [54, 3], [55, 1], [56, 2],
+                [57, 1], [58, 1], [59, 1], [61, 0], [62, 0], [63, 1], [64, 1],
+                [65, 0], [66, 0], [67, 3], [68, 2], [69, 100], [70, 100], [79, 1],
+                [81, 0], [82, 1], [83, 1], [84, 0], [85, 0], [87, 0], [88, 0],
+                [89, 50], [90, 50], [91, 50], [92, 50], [93, 1], [99, 0], [100, 30],
+                [101, 0], [102, 1], [103, 0], [104, 50], [105, 0], [106, 0.3],
+                [107, 0], [112, 0], [113, 0], [114, 0], [115, 0], [116, 0],
+                [117, 0], [118, 0], [119, 0], [120, 0], [121, 1], [122, 1],
+                [123, 0], [130, 0], [131, 0], [132, 1], [135, 1], [133, 0]
             ]
+        }
 
-            # Batch insert the new data using parameterized queries
-            cursor.executemany(
-                "INSERT INTO LocalStorage (key, value) VALUES (?, ?)",
-                insert_records
-            )
-            messagebox.OK = messagebox.showinfo("Success",
-                                                "FPS Value changed successfully! You can now close this program and enjoy the game!")
-            db.commit()
-            db.close()
-            config.read(path_dir_fs_cfg)
-            config.set("/Script/Engine.GameUserSettings", "FrameRateLimit", str(fps))
-            with open(path_dir_fs_cfg, "w") as configfile:
-                config.write(configfile)
+        play_menu_info_dict = {
+            "1": 100, "2": 100, "3": 100, "4": 100, "5": 0, "6": 0,
+            "7": -0.4658685302734375, "10": 3, "11": 3, "20": 0, "21": 0,
+            "22": 0, "23": 0, "24": 0, "25": 0, "26": 0, "27": 0, "28": 0,
+            "29": 0, "30": 0, "31": 0, "32": 0, "33": 0, "34": 0, "35": 0,
+            "36": 0, "37": 0, "38": 0, "39": 0, "40": 0, "41": 0, "42": 0,
+            "43": 0, "44": 0, "45": 0, "46": 0, "47": 0, "48": 0, "49": 0,
+            "50": 0, "51": 1, "52": 1, "53": 0, "54": 3, "55": 1, "56": 2,
+            "57": 1, "58": 1, "59": 1, "61": 0, "62": 0, "63": 1, "64": 1,
+            "65": 0, "66": 0, "67": 3, "68": 2, "69": 100, "70": 100, "79": 1,
+            "81": 0, "82": 1, "83": 1, "84": 0, "85": 0, "87": 0, "88": 0,
+            "89": 50, "90": 50, "91": 50, "92": 50, "93": 1, "99": 0, "100": 30,
+            "101": 0, "102": 1, "103": 0, "104": 50, "105": 0, "106": 0.3,
+            "107": 0, "112": 0, "113": 0, "114": 0, "115": 0, "116": 0,
+            "117": 0, "118": 0, "119": 0, "120": 0, "121": 1, "122": 1,
+            "123": 0, "130": 0, "131": 0, "132": 1
+        }
+
+        # Remove the trigger if it exists
+        cursor.execute("DROP TRIGGER IF EXISTS prevent_custom_frame_rate_update")
+
+        # Create the trigger to prevent updates to the CustomFrameRate value
+        trigger_sql = f"""
+            CREATE TRIGGER prevent_custom_frame_rate_update
+            AFTER UPDATE OF value ON LocalStorage
+            WHEN NEW.key = 'CustomFrameRate'
+            BEGIN
+                UPDATE LocalStorage
+                SET value = {fps}
+                WHERE key = 'CustomFrameRate';
+            END;
+        """
+        cursor.execute(trigger_sql)
+
+        # Finally, update the FPS value
+        cursor.execute(
+            "UPDATE LocalStorage SET value = ? WHERE key = 'CustomFrameRate'",
+            (fps,)
+        )
+
+        # Delete the old data if it exists for a clean state
+        cursor.execute(
+            "DELETE FROM LocalStorage WHERE key IN ('MenuData', 'PlayMenuInfo')"
+        )
+
+        # Prepare the new data for insertion
+        insert_records = [
+            ('MenuData', json.dumps(menu_data_dict)),
+            ('PlayMenuInfo', json.dumps(play_menu_info_dict))
+        ]
+
+        # Batch insert the new data using parameterized queries
+        cursor.executemany(
+            "INSERT INTO LocalStorage (key, value) VALUES (?, ?)",
+            insert_records
+        )
+        messagebox.OK = messagebox.showinfo("Success",
+                                            "FPS Value changed successfully! You can now close this program and enjoy the game!")
+        db.commit()
+        db.close()
+        config.read(path_dir_fs_cfg)
+        config.set("/Script/Engine.GameUserSettings", "FrameRateLimit", str(fps))
+        with open(path_dir_fs_cfg, "w") as configfile:
+            config.write(configfile)
 
     except TypeError as e:
         if str(e) == "'NoneType' object is not subscriptable":
             messagebox.showerror("Error",
                                  "Your LocalStorage file is incomplete. Please run the game at least once and try again!")
         else:
-            messagebox.showerror("Error",
-                                 f"An error occurred. Please raise an issue or contact me on the GitHub Page with the following message: \n\n{e}")
-            webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
+            github_redirect_error(e)
 
     except sqlite3.OperationalError as e:
         if "attempt to write a readonly database" in str(e) and "Program Files" in str(db_directory):
@@ -282,20 +280,18 @@ def fps_value(db_directory, path_dir_fs_cfg) -> None:
             exit()
 
     except Exception as e:
-        messagebox.showerror("Error",
-                             f"An error occurred. Please raise an issue or contact me on the GitHub Page with the following message: \n\n{e}")
-        webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
+        github_redirect_error(e)
 
 
 def raytracing_settings(db_directory, path_dir_rt_cfg, path_dir_client_config_rt_json, path_dir_client_saved_sg_rt_json,
                         root_window) -> None:
     try:
         engine_config.read(path_dir_rt_cfg)
-        if engine_config.has_section("/Script/Engine.RendererRTXSettings") is False:
+        if not engine_config.has_section("/Script/Engine.RendererRTXSettings"):
             engine_config.add_section("/Script/Engine.RendererRTXSettings")
         ask_RT = messagebox.askyesno("Enable Raytracing?",
                                      "Do you want to enable or disable Raytracing? \n\nYou will get lower FPS with Raytracing enabled. \n\nIt is recommended to have at least a RTX 2000 series or a RX 6000 series GPU for compatibility with DX12 Ultimate. \n\nClick Yes to access the Raytracing Options or No to disable Raytracing.")
-        if ask_RT is True:
+        if ask_RT:
             root_window.withdraw()
             rt_window = Tk()
             rt_window.title("Raytracing Options")
@@ -331,22 +327,42 @@ def raytracing_settings(db_directory, path_dir_rt_cfg, path_dir_client_config_rt
             db = sqlite3.connect(
                 Path(db_directory).joinpath("LocalStorage.db"))
             cursor = db.cursor()
-            cursor.execute(
-                "INSERT INTO LocalStorage (Key, Value) VALUES ('RayTracing', ?) ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
-                (0,))
-            cursor.execute(
-                "INSERT INTO LocalStorage (Key, Value) VALUES ('RayTracedReflection', ?) ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
-                (0,))
-            cursor.execute(
-                "INSERT INTO LocalStorage (Key, Value) VALUES ('RayTracedGI', ?) ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
-                (0,))
+            db_settings = ["RayTracing", "RayTracedReflection", "RayTracedGI"]
+            for key in db_settings:
+                cursor.execute(
+                    "INSERT INTO LocalStorage (Key, Value) VALUES (?, ?) "
+                    "ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
+                    (key, 0),
+                )
             db.commit()
             db.close()
-            engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing", str(0))
-            engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing.LimitDevice", str(1))
-            engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing.EnableInGame", str(0))
-            engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing.EnableOnDemand", str(0))
-            engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing.EnableInEditor", str(0))
+            ray_tracing_settings = {
+                "r.RayTracing": 0,
+                "r.RayTracing.LimitDevice": 1,
+                "r.RayTracing.EnableInGame": 0,
+                "r.RayTracing.EnableOnDemand": 0,
+                "r.RayTracing.EnableInEditor": 0,
+            }
+            for key, value in ray_tracing_settings.items():
+                engine_config.set("/Script/Engine.RendererRTXSettings", key, str(value))
+            ray_tracing_preset_keys = { # keys to remove after disabling rt
+                "r.Lumen.ScreenProbeGather.DownsampleFactor",
+                "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution",
+                "r.Lumen.ScreenProbeGather.RadianceCache.NumProbesToTraceBudget",
+                "r.Lumen.ScreenProbeGather.TracingOctahedronResolution",
+                "r.Lumen.ScreenProbeGather.ScreenTraces.HZBTraversal.FullResDepth",
+                "r.Lumen.ScreenProbeGather.Temporal.DistanceThreshold",
+                "r.Lumen.ScreenProbeGather.Temporal.MaxFramesAccumulated",
+                "r.Lumen.Reflections.DownsampleFactor",
+                "r.RayTracing.Shadows.MinScissorPercent",
+                "r.Shadow.Denoiser.MinScissorPercent",
+                "r.RayTracing.Shadows.MaxNumNoScissorCullLights",
+                "r.Lumen.DiffuseIndirect.Allow",
+                "r.Lumen.Reflections.Allow"
+            }
+            for key in ray_tracing_preset_keys:
+                if engine_config.has_option("/Script/Engine.RendererRTXSettings", key):
+                    engine_config.remove_option("/Script/Engine.RendererRTXSettings", key)
             with open(path_dir_rt_cfg, "w") as configfile:
                 engine_config.write(configfile)
             rtDisable = {"bRayTracingEnable": 0}
@@ -354,6 +370,8 @@ def raytracing_settings(db_directory, path_dir_rt_cfg, path_dir_client_config_rt
                 with open(path, 'w') as rtxjson:
                     json.dump(rtDisable, rtxjson)
             messagebox.showinfo("Success", "Raytracing disabled successfully!")
+            messagebox.showinfo("Info", "You can now close this program and enjoy the game!")
+            root_window.destroy()
     except TypeError as e:
         if str(e) == "'NoneType' object is not subscriptable":
             messagebox.showerror("Error",
@@ -366,13 +384,9 @@ def raytracing_settings(db_directory, path_dir_rt_cfg, path_dir_client_config_rt
             exit()
 
         else:
-            messagebox.showerror("Error",
-                                 f"An error occurred. Please raise an issue or contact me on the GitHub Page with the following message: \n\n{e}")
-            webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
+            github_redirect_error(e)
     except Exception as e:
-        messagebox.showerror("Error",
-                             f"An error occurred. Please raise an issue or contact me on the GitHub Page with the following message: \n\n{e}")
-        webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
+        github_redirect_error(e)
 
 
 def raytracing_apply(db_directory, path_dir_rt_cfg, path_dir_client_config_rt_json, path_dir_client_saved_sg_rt_json,
@@ -380,47 +394,66 @@ def raytracing_apply(db_directory, path_dir_rt_cfg, path_dir_client_config_rt_js
     engine_config.read(path_dir_rt_cfg)
     try:
         rt_value = None
-        rtref_value = None
-        rtgi_value = None
-        if rt == "Low":
-            rt_value = 1
-        elif rt == "Medium":
-            rt_value = 2
-        elif rt == "High":
-            rt_value = 3
-        if rtref == "1":
-            rtref_value = 1
-        else:
-            rtref_value = 0
-        if rtgi == "1":
-            rtgi_value = 1
-        else:
-            rtgi_value = 0
+        rt_preset = {
+            'r.Lumen.DiffuseIndirect.Allow': int(rtgi),
+            'r.Lumen.Reflections.Allow': int(rtref)
+        }
+        rt_preset_values = []
+        rt_preset_keys = [ # all rt settings (order is important when filling in values!)
+            "r.Lumen.ScreenProbeGather.DownsampleFactor",
+            "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution",
+            "r.Lumen.ScreenProbeGather.RadianceCache.NumProbesToTraceBudget",
+            "r.Lumen.ScreenProbeGather.TracingOctahedronResolution",
+            "r.Lumen.ScreenProbeGather.ScreenTraces.HZBTraversal.FullResDepth",
+            "r.Lumen.ScreenProbeGather.Temporal.DistanceThreshold",
+            "r.Lumen.ScreenProbeGather.Temporal.MaxFramesAccumulated",
+            "r.Lumen.Reflections.DownsampleFactor",
+            "r.RayTracing.Shadows.MinScissorPercent",
+            "r.Shadow.Denoiser.MinScissorPercent",
+            "r.RayTracing.Shadows.MaxNumNoScissorCullLights"
+        ]
+        match rt:
+            case "Low":
+                rt_value = 1
+                rt_preset_values = [64, 16, 180, 4, 0, 0.05, 30, 2, 0.6, 0.3, 3]  # low settings
+            case "Medium":
+                rt_value = 2
+                rt_preset_values = [32, 32, 240, 6, 1, 0.03, 10, 1, 0.4, 0.2, 5]  # medium settings
+            case "High":
+                rt_value = 3
+                rt_preset_values = [16, 32, 300, 8, 1, 0.005, 10, 1, 0, 0]  # high settings (the only preset not including MaxNumNoScissorCullLights)
+                rt_preset_keys.remove("r.RayTracing.Shadows.MaxNumNoScissorCullLights")
+        rt_preset.update({key: value for key, value in zip(rt_preset_keys, rt_preset_values)})
         db = sqlite3.connect(
             Path(db_directory).joinpath("LocalStorage.db"))
         cursor = db.cursor()
-        cursor.execute(
-            "INSERT INTO LocalStorage (Key, Value) VALUES ('RayTracing', ?) ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
-            (rt_value,))
-        cursor.execute(
-            "INSERT INTO LocalStorage (Key, Value) VALUES ('RayTracedReflection', ?) ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
-            (rtref_value,))
-        cursor.execute(
-            "INSERT INTO LocalStorage (Key, Value) VALUES ('RayTracedGI', ?) ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
-            (rtgi_value,))
-        cursor.execute(
-            "INSERT INTO LocalStorage (Key, Value) VALUES ('XessEnable', ?) ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
-            (0,))
-        cursor.execute(
-            "INSERT INTO LocalStorage (Key, Value) VALUES ('XessQuality', ?) ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
-            (0,))
+        db_settings = {
+            "RayTracing": rt_value,
+            "RayTracedReflection": int(rtref),
+            "RayTracedGI": int(rtgi),
+            "XessEnable": 0,
+            "XessQuality": 0,
+        }
+        for key, value in db_settings.items():
+            cursor.execute(
+                "INSERT INTO LocalStorage (Key, Value) VALUES (?, ?) "
+                "ON CONFLICT(Key) DO UPDATE SET Value = excluded.Value",
+                (key, value),
+            )
         db.commit()
         db.close()
-        engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing", str(1))
-        engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing.LimitDevice", str(0))
-        engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing.EnableInGame", str(1))
-        engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing.EnableOnDemand", str(1))
-        engine_config.set("/Script/Engine.RendererRTXSettings", "r.RayTracing.EnableInEditor", str(1))
+        if engine_config.has_option("/Script/Engine.RendererRTXSettings", "r.RayTracing.Shadows.MaxNumNoScissorCullLights"): # kind of annoying to have this here but required if changing from medium or low to high
+            engine_config.remove_option("/Script/Engine.RendererRTXSettings", "r.RayTracing.Shadows.MaxNumNoScissorCullLights")
+        ray_tracing_settings = {
+            "r.RayTracing": 1,
+            "r.RayTracing.LimitDevice": 0,
+            "r.RayTracing.EnableInGame": 1,
+            "r.RayTracing.EnableOnDemand": 1,
+            "r.RayTracing.EnableInEditor": 1,
+        }
+        ray_tracing_settings.update(rt_preset)
+        for key, value in ray_tracing_settings.items():
+            engine_config.set("/Script/Engine.RendererRTXSettings", key, str(value))
         with open(path_dir_rt_cfg, "w") as configfile:
             engine_config.write(configfile)
         rtEnable = {"bRayTracingEnable": 1}
@@ -444,10 +477,11 @@ def raytracing_apply(db_directory, path_dir_rt_cfg, path_dir_client_config_rt_js
             exit()
 
         else:
-            messagebox.showerror("Error",
-                                 f"An error occurred. Please raise an issue or contact me on the GitHub Page with the following message: \n\n{e}")
-            webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
+            github_redirect_error(e)
     except Exception as e:
-        messagebox.showerror("Error",
+        github_redirect_error(e)
+
+def github_redirect_error(e):
+    messagebox.showerror("Error",
                              f"An error occurred. Please raise an issue or contact me on the GitHub Page with the following message: \n\n{e}")
-        webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")
+    webbrowser.open("https://github.com/WakuWakuPadoru/WuWa_Simple_FPSUnlocker/issues")

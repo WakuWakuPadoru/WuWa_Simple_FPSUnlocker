@@ -11,7 +11,7 @@ def check_isvalid_process() -> bool:
         if process.name() in check_variables:
             PIDs.append(str(process.pid))
             process_running_check = True
-    if process_running_check is True:
+    if process_running_check:
         PID_joined = "\n".join(PIDs)
         messagebox.showerror("Error",
                              f"Please close the game before proceeding.\n\nThe Unlocker checks if either \"launcher.exe\", \"launcher_main.exe\", or \"Wuthering Waves.exe\" is currently running.\n\nProcess IDs:\n{PID_joined}")
