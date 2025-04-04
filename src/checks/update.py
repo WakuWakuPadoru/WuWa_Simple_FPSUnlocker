@@ -2,7 +2,7 @@ import requests
 import webbrowser
 from tkinter import messagebox
 
-version = 0.92
+version = 0.93
 
 
 def check_version() -> None:
