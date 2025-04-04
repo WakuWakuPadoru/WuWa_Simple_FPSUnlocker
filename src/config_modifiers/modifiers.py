@@ -273,6 +273,12 @@ def fps_value(db_directory, path_dir_fs_cfg) -> None:
         else:
             github_redirect_error(e)
 
+    except sqlite3.OperationalError as e:
+        if "attempt to write a readonly database" in str(e) and "Program Files" in str(db_directory):
+            messagebox.showerror("Access Error",
+                                 "As the game is installed in the Program Files directory, you may need to run this program with Admin Rights.")
+            exit()
+
     except Exception as e:
         github_redirect_error(e)
 
@@ -370,6 +376,13 @@ def raytracing_settings(db_directory, path_dir_rt_cfg, path_dir_client_config_rt
         if str(e) == "'NoneType' object is not subscriptable":
             messagebox.showerror("Error",
                                  "Your LocalStorage file is incomplete. Please run the game at least once and try again!")
+
+    except sqlite3.OperationalError as e:
+        if "attempt to write a readonly database" in str(e) and "Program Files" in str(db_directory):
+            messagebox.showerror("Access Error",
+                                 "As the game is installed in the Program Files directory, you may need to run this program with Admin Rights.")
+            exit()
+
         else:
             github_redirect_error(e)
     except Exception as e:
@@ -456,6 +469,13 @@ def raytracing_apply(db_directory, path_dir_rt_cfg, path_dir_client_config_rt_js
         if str(e) == "'NoneType' object is not subscriptable":
             messagebox.showerror("Error",
                                  "Your LocalStorage file is incomplete. Please run the game at least once and try again!")
+
+    except sqlite3.OperationalError as e:
+        if "attempt to write a readonly database" in str(e) and "Program Files" in str(db_directory):
+            messagebox.showerror("Access Error",
+                                 "As the game is installed in the Program Files directory, you may need to run this program with Admin Rights.")
+            exit()
+
         else:
             github_redirect_error(e)
     except Exception as e:
