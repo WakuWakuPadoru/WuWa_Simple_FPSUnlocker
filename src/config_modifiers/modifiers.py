@@ -21,7 +21,8 @@ def choose_directory(action, root_window) -> None:
     possible_game_dirs = [
         "C:/Wuthering Waves/Wuthering Waves Game/",
         "C:/Program Files/Wuthering Waves/Wuthering Waves Game/",
-        "D:/Wuthering Waves/Wuthering Waves Game/"
+        "D:/Wuthering Waves/Wuthering Waves Game/",
+        "D:/Program Files/Wuthering Waves/Wuthering Waves Game/"
     ]
     game_dir = next((dir for dir in possible_game_dirs if os.path.exists(dir)), None)
     directory = askopenfilename(initialdir=game_dir,
@@ -45,7 +46,7 @@ def choose_directory(action, root_window) -> None:
         messagebox.showerror("Error",
                                 "LocalStorage file not found. Please run the game at least once and try again!")
         return
-    matching_files = sorted(glob.glob(str(path_dir_ext) + "/LocalStorage*.db"))
+    matching_files = sorted(glob.glob(glob.escape(str(path_dir_ext)) + "/LocalStorage*.db"))
     matching_files_length = len(matching_files)
     if matching_files_length != 1:
         match matching_files_length:
