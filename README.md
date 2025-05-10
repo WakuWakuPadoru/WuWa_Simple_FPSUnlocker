@@ -2,6 +2,7 @@
 
 ## Introduction
 
+### **RT Unlock doesn't currently work! But FPS Unlock still works.**
 ### **Updated for 2.2! FPS Unlocking is now working in 2.2 even on Unsupported CPUs/GPUs** - 29th March 2025
 ### **Enable 120 FPS Support AND/OR Raytracing/RT on AMD/Older Nvidia GPUs**
 ### **<ins>For AMD GPU Users, Please read the FAQ Below!</ins>**
